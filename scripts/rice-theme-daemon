@@ -4,7 +4,9 @@ set -eu
 
 here="$(dirname "$0")"
 conf="${HOME}/.config/hkpie/palette.conf"
-lock="${XDG_RUNTIME_DIR:-/tmp}/hkpie-theme-daemon.lock"
+# Keep the lock in $HOME: XDG_RUNTIME_DIR differs between i3 and hand-launched
+# shells, which previously allowed two watchers to run at once.
+lock="${HOME}/.cache/hkpie/theme-daemon.lock"
 
 python3 "$here/palette.py" --init >/dev/null 2>&1 || true
 

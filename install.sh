@@ -223,13 +223,24 @@ ok "PCManFM set to open terminals in kitty"
 info "Installing helper scripts"
 # ---------------------------------------------------------------------------
 mkdir -p "${HOME}/.local/bin"
-for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-pick-wallpaper.py rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
+for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-pick-wallpaper.py rice-wallpaper-config.py rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
     install_file "${RICE_DIR}/scripts/${script}" "${HOME}/.local/bin/${script}"
     chmod +x "${HOME}/.local/bin/${script}"
 done
 
+# Keep a wallpaper chosen through Rice → Wallpaper after config reinstalls.
+if [[ -f "${HOME}/.config/hkpie/wallpaper" ]]; then
+    selected_wallpaper="$(<"${HOME}/.config/hkpie/wallpaper")"
+    if [[ -n "${selected_wallpaper}" && -f "${selected_wallpaper}" ]]; then
+        python3 "${HOME}/.local/bin/rice-wallpaper-config.py" \
+            --config "${HOME}/.config/kawaii-rice/palette.env" \
+            "${selected_wallpaper}"
+        ok "kept custom wallpaper in palette.env"
+    fi
+fi
+
 # ---------------------------------------------------------------------------
-info "Wiring the editable palette to GTK, pmenu and lock assets"
+info "Wiring the editable palette to GTK, pmenu, kitty, i3 and lock assets"
 # ---------------------------------------------------------------------------
 python3 "${HOME}/.local/bin/palette.py" --init
 python3 "${HOME}/.local/bin/rice-theme.py"
@@ -428,7 +439,7 @@ cat <<EOF
   Log out and select i3, or press Mod+Shift+c to reload.
   • Mod+d opens the pmenu pie menu with Retrosmart icons (no Kando overlay).
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
-  • Mod+Shift+t opens the editable palette in nano; edits restyle GTK/pmenu live.
+  • Mod+Shift+t opens the editable palette in nano; edits restyle GTK, kitty, i3, dunst, picom, pmenu and the live lock screen.
   • Mod+Shift+x locks with a live time/date card and a pie-style round indicator.
   • Palette roles: background #EAE7AA · highlight #F6F098 · accent #F0A090
   • Backups: ${BACKUP_DIR}

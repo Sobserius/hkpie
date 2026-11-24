@@ -63,6 +63,11 @@ set_wallpaper() {
     fi
 
     printf '%s\n' "$dest" > "$SELECTION"
+
+    config_helper="$here/rice-wallpaper-config.py"
+    [ -f "$config_helper" ] || config_helper="${HOME}/.local/bin/rice-wallpaper-config.py"
+    python3 "$config_helper" --config "$CONFIG" "$dest"
+
     WALLPAPER="$dest"
     apply "$dest"
 }

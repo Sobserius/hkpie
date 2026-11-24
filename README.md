@@ -38,8 +38,10 @@ Press `Mod+Shift+t` (or pick **Rice → Edit theme** in `Mod+d`) to open
 `~/.config/hkpie/palette.conf` in nano inside kitty. The file contains only the
 role=`#HEX` lines above — no exports, no CSS, no comments. `accent` is the one
 you want for the active color. A small daemon
-started by i3 watches it and re-renders the GTK 3/4 themes, pmenu X resources,
-lock image, preview, and merged X resources as soon as you save.
+started by i3 watches it and re-renders **everything** as soon as you save:
+GTK 3/4 themes, pmenu X resources (merged live), kitty colors (via its config
+autoreload), i3 borders (via `i3-msg reload`), dunst urgency colors, picom's
+hard shadow, lock-ring colors, the lock card image, and the preview.
 
 ---
 
@@ -234,8 +236,10 @@ Slices:
   lock, suspend
 
 The wallpaper picker copies your image into
-`~/.local/share/backgrounds/kawaii-rice/` and remembers it in
-`~/.config/hkpie/wallpaper`, so it survives i3 restarts and reinstalls. Use
+`~/.local/share/backgrounds/kawaii-rice/`, remembers it in
+`~/.config/hkpie/wallpaper`, **and writes `export RICE_WALLPAPER='…'` into
+`~/.config/kawaii-rice/palette.env`**, so the config shows whatever you set and
+it survives i3 restarts and reinstalls. Use
 `rice-wallpaper next` (or an image from the same folder) if you want to cycle
 without the chooser. The chooser's format filter keeps one hard outline — the
 stacked frame/linked/combo borders are collapsed.
@@ -282,12 +286,13 @@ hkpie/
 │   ├── install-portage.sh          # optional root helper
 │   ├── palette.py                  # reads ~/.config/hkpie/palette.conf
 │   ├── rice-theme                  # opens the palette in nano (kitty)
-│   ├── rice-theme.py               # renders GTK/pmenu/lock from the palette
+│   ├── rice-theme.py               # re-renders all themed configs from the palette
 │   ├── rice-theme-daemon           # watches for palette saves
 │   ├── make-lock.py                # generates the lock-screen image
 │   ├── make-preview.py             # regenerates the pmenu/GTK preview
 │   ├── rice-wallpaper
 │   ├── rice-pick-wallpaper.py      # GTK file chooser for wallpapers
+│   ├── rice-wallpaper-config.py    # writes the choice into palette.env
 │   ├── rice-reload
 │   ├── rice-check
 │   ├── rice-shot

@@ -1,45 +1,63 @@
 #!/usr/bin/env sh
-# Lock the screen with a flat cream filler and a pie-style ring. ✿
+# Lock the screen with a flat filler and a pie-style ring. ✿
+# Every color is read from ~/.config/hkpie/palette.conf at lock time.
 set -u
 
+here="$(dirname "$0")"
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
-PIE_LOCKER="${HOME}/.local/bin/hkpie-i3lock"
-FILLER="$(python3 "$(dirname "$0")/palette.py" --get background 2>/dev/null || true)"
-FILLER="${FILLER#\#}"
-[ -n "$FILLER" ] || FILLER=EAE7AA
+PIE_LOCKER="${HKPIE_LOCKER:-${HOME}/.local/bin/hkpie-i3lock}"
+
+# palette_hex ROLE FALLBACK_HEX_NO_HASH -> RRGGBBFF for i3lock-color.
+palette_hex() {
+    value="$(python3 "$here/palette.py" --get "$1" 2>/dev/null || true)"
+    value="${value#\#}"
+    [ -n "$value" ] || value="$2"
+    printf '%sFF' "$value"
+}
+
+FILLER_HEX="$(python3 "$here/palette.py" --get background 2>/dev/null || true)"
+FILLER_HEX="${FILLER_HEX#\#}"
+[ -n "$FILLER_HEX" ] || FILLER_HEX=EAE7AA
+
+SURFACE="$(palette_hex surface F7F7F7)"
+BACKGROUND="$(palette_hex background EAE7AA)"
+HIGHLIGHT="$(palette_hex highlight F6F098)"
+ACCENT="$(palette_hex accent F0A090)"
+SHADOW="$(palette_hex shadow 2E2B21)"
+MUTED="$(palette_hex muted C3AF8D)"
 
 # Regenerate on every lock so the clock and date are current.
 if command -v python3 >/dev/null 2>&1; then
-    python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
+    python3 "$here/make-lock.py" >/dev/null 2>&1 || true
 fi
 
 pie_lock() {
     if [ -f "$LOCK_IMAGE" ]; then
         set -- -i "$LOCK_IMAGE"
     else
-        set -- -c "$FILLER"
+        set -- -c "$FILLER_HEX"
     fi
 
-    # A fat butter ring, blush typing arcs, dark slab separators: the lock
-    # screen's round indicator now echoes the pmenu pie slices. It is always
+    # A fat highlight ring, accent typing arcs, dark slab separators: the lock
+    # screen's round indicator echoes the pmenu pie slices. It is always
     # visible, so WRONG/CHECK text stays readable inside; the EN/RU hint lives
     # on the card instead of crowding the ring.
     exec "$PIE_LOCKER" -n -e -f "$@" \
         --indicator \
         --radius=104 \
         --ring-width=20 \
-        --inside-color=F7F7F7FF \
-        --ring-color=F6F098FF \
-        --insidever-color=EAE7AAFF \
-        --ringver-color=F0A090FF \
-        --insidewrong-color=F0A090FF \
-        --ringwrong-color=2E2B21FF \
-        --line-color=2E2B21FF \
-        --keyhl-color=F0A090FF \
-        --bshl-color=C3AF8DFF \
-        --separator-color=2E2B21FF \
-        --verif-color=2E2B21FF \
-        --wrong-color=2E2B21FF \
+        --inside-color="$SURFACE" \
+        --ring-color="$HIGHLIGHT" \
+        --insidever-color="$BACKGROUND" \
+        --ringver-color="$ACCENT" \
+        --insidewrong-color="$ACCENT" \
+        --ringwrong-color="$SHADOW" \
+        --line-color="$SHADOW" \
+        --keyhl-color="$ACCENT" \
+        --bshl-color="$MUTED" \
+        --separator-color="$SHADOW" \
+        --verif-color="$SHADOW" \
+        --wrong-color="$SHADOW" \
         --verif-size=24 \
         --wrong-size=24 \
         --verif-text=CHECK \
@@ -57,7 +75,7 @@ if command -v i3lock >/dev/null 2>&1; then
     if [ -f "$LOCK_IMAGE" ]; then
         exec i3lock -n -e -f -i "$LOCK_IMAGE"
     fi
-    exec i3lock -n -e -f -c "$FILLER"
+    exec i3lock -n -e -f -c "$FILLER_HEX"
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.
