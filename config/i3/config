@@ -1,8 +1,8 @@
 # ════════════════════════════════════════════════════════════════════════════
 #  hkpie rice · i3wm  ✿  kawaii neubrutalist
-#  Palette sampled from ~/Pictures/hkpiewallpaper.png
-#  cream #EAE7AA · butter #F6F098 · paper #F7F7F7 · blush #F0A090
-#  tan   #C3AF8D · mocha  #A79071 · ink   #474333 · deep  #2E2B21
+#  Palette roles (see ~/.config/hkpie/palette.conf)
+#  background #EAE7AA · highlight #F6F098 · surface #F7F7F7 · accent #F0A090
+#  muted #C3AF8D · muted-dark #A79071 · foreground #474333 · shadow #2E2B21
 # ════════════════════════════════════════════════════════════════════════════
 
 set $mod Mod4
@@ -16,14 +16,14 @@ set $mixer pavucontrol
 # ~/.local/bin is not on PATH in the X session; use absolute paths.
 set $menu /home/sob/.local/bin/rice-menu
 
-set $cream  "#EAE7AA"
-set $butter "#F6F098"
-set $paper  "#F7F7F7"
-set $blush  "#F0A090"
-set $tan    "#C3AF8D"
-set $mocha  "#A79071"
-set $ink    "#474333"
-set $deep   "#2E2B21"
+set $background  "#EAE7AA"
+set $highlight "#F6F098"
+set $surface  "#F7F7F7"
+set $accent  "#F0A090"
+set $muted    "#C3AF8D"
+set $muted-dark  "#A79071"
+set $foreground    "#474333"
+set $shadow   "#2E2B21"
 
 # ── General feel ────────────────────────────────────────────────────────────
 font pango:JetBrains Mono 11
@@ -50,12 +50,12 @@ gaps top 8
 workspace_layout default
 
 # i3 colors: border, background, text, indicator
-client.focused          $blush  $blush  $deep   $blush
-client.focused_inactive $ink    $cream  $ink    $tan
-client.unfocused        $mocha  $cream  $ink    $tan
-client.urgent           $deep   $blush  $paper  $paper
-client.placeholder      $cream  $cream  $ink    $cream
-client.background       $cream
+client.focused          $accent  $accent  $shadow   $accent
+client.focused_inactive $foreground    $background  $foreground    $muted
+client.unfocused        $muted-dark  $background  $foreground    $muted
+client.urgent           $shadow   $accent  $surface  $surface
+client.placeholder      $background  $background  $foreground    $background
+client.background       $background
 
 # ── Workspaces ──────────────────────────────────────────────────────────────
 set $ws1 "1: 🌸"

@@ -16,12 +16,12 @@ HOME = pathlib.Path.home()
 OUT = HOME / ".local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 
 COLORS = load()
-INK = rgba("ink", COLORS)
-DEEP = rgba("deep", COLORS)
-PAPER = rgba("paper", COLORS)
-BUTTER = rgba("butter", COLORS)
-BLUSH = rgba("blush", COLORS)
-CREAM = rgba("cream", COLORS)
+OUTLINE = rgba("outline", COLORS)
+SHADOW = rgba("shadow", COLORS)
+SURFACE = rgba("surface", COLORS)
+HIGHLIGHT = rgba("highlight", COLORS)
+ACCENT = rgba("accent", COLORS)
+BACKGROUND = rgba("background", COLORS)
 
 DAYS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 MONTHS = ("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
@@ -91,13 +91,13 @@ def chip(
     font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
     width: int = 6,
 ) -> None:
-    draw.rectangle((box[0] + 14, box[1] + 14, box[2] + 14, box[3] + 14), fill=DEEP)
-    draw.rectangle(box, fill=fill, outline=INK, width=width)
+    draw.rectangle((box[0] + 14, box[1] + 14, box[2] + 14, box[3] + 14), fill=SHADOW)
+    draw.rectangle(box, fill=fill, outline=OUTLINE, width=width)
     draw.text(
         ((box[0] + box[2]) // 2, (box[1] + box[3]) // 2),
         label,
         font=font,
-        fill=DEEP,
+        fill=SHADOW,
         anchor="mm",
     )
 
@@ -106,7 +106,7 @@ def main() -> None:
     width, height = screen_size()
     # Lock screens use a flat filler instead of the desktop wallpaper; the
     # cream is sampled from the wallpaper palette and keeps the ring/slab crisp.
-    image = Image.new("RGBA", (width, height), CREAM)
+    image = Image.new("RGBA", (width, height), BACKGROUND)
     draw = ImageDraw.Draw(image)
 
     cx, cy = width // 2, height // 2
@@ -120,22 +120,22 @@ def main() -> None:
 
     # Neubrutalist lock card: square, 18px hard shadow, heavy ink outline.
     draw.rectangle(
-        (card[0] + 18, card[1] + 18, card[2] + 18, card[3] + 18), fill=DEEP
+        (card[0] + 18, card[1] + 18, card[2] + 18, card[3] + 18), fill=SHADOW
     )
-    draw.rectangle(card, fill=PAPER, outline=INK, width=10)
+    draw.rectangle(card, fill=SURFACE, outline=OUTLINE, width=10)
 
     now = datetime.now()
     time_text = now.strftime("%H:%M")
     date_text = f"{DAYS[now.weekday()]} {now.day:02d} {MONTHS[now.month - 1]}"
 
-    draw.text((cx, card[1] + 196), time_text, font=mono(132), fill=DEEP, anchor="mm")
-    draw.rectangle((cx - 180, card[1] + 276, cx + 180, card[1] + 288), fill=BLUSH)
-    draw.text((cx, card[1] + 326), date_text, font=sans(38), fill=INK, anchor="mm")
+    draw.text((cx, card[1] + 196), time_text, font=mono(132), fill=SHADOW, anchor="mm")
+    draw.rectangle((cx - 180, card[1] + 276, cx + 180, card[1] + 288), fill=ACCENT)
+    draw.text((cx, card[1] + 326), date_text, font=sans(38), fill=OUTLINE, anchor="mm")
 
     chip(draw, (cx - 270, card[3] - 112, cx + 270, card[3] - 42),
-         CREAM, "TYPE PASSWORD / ENTER", sans(28), width=5)
+         BACKGROUND, "TYPE PASSWORD / ENTER", sans(28), width=5)
     draw.text((card[2] - 26, card[1] + 26), "ALT+SHIFT : EN/RU",
-              font=sans(20), fill=PAPER, anchor="ra")
+              font=sans(20), fill=SURFACE, anchor="ra")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     image.convert("RGB").save(OUT, "PNG", optimize=True)

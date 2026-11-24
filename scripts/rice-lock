@@ -4,7 +4,7 @@ set -u
 
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 PIE_LOCKER="${HOME}/.local/bin/hkpie-i3lock"
-FILLER="$(python3 "$(dirname "$0")/palette.py" --get cream 2>/dev/null || true)"
+FILLER="$(python3 "$(dirname "$0")/palette.py" --get background 2>/dev/null || true)"
 FILLER="${FILLER#\#}"
 [ -n "$FILLER" ] || FILLER=EAE7AA
 

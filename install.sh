@@ -430,7 +430,7 @@ cat <<EOF
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
   • Mod+Shift+t opens the editable palette in nano; edits restyle GTK/pmenu live.
   • Mod+Shift+x locks with a live time/date card and a pie-style round indicator.
-  • Colors: cream #EAE7AA · butter #F6F098 · blush #F0A090 · ink #474333
+  • Palette roles: background #EAE7AA · highlight #F6F098 · accent #F0A090
   • Backups: ${BACKUP_DIR}
 
   Have fun ♡

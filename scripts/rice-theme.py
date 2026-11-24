@@ -12,7 +12,7 @@ import sys
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-from palette import CONF, DEFAULT, load, write_default  # noqa: E402
+from palette import CONF, DEFAULT, ensure, load  # noqa: E402
 
 HOME = pathlib.Path.home()
 GTK_CSS = [
@@ -24,17 +24,17 @@ GTK_CSS = [
 ]
 PMENU_XRESOURCES = HOME / ".config/pmenu/Xresources"
 PMENU_COLORS = {
-    "centerColor": "paper",
-    "background": "butter",
-    "foreground": "deep",
-    "activeBackground": "blush",
-    "activeForeground": "deep",
-    "borderColor": "deep",
-    "topShadowColor": "deep",
-    "bottomShadowColor": "deep",
+    "centerColor": "surface",
+    "background": "highlight",
+    "foreground": "shadow",
+    "activeBackground": "accent",
+    "activeForeground": "shadow",
+    "borderColor": "shadow",
+    "topShadowColor": "shadow",
+    "bottomShadowColor": "shadow",
 }
 
-GTK_DEFINE = re.compile(r"@define-color\s+([a-z]+)\s+#[0-9A-Fa-f]{6}\s*;")
+GTK_DEFINE = re.compile(r"@define-color\s+([a-z-]+)\s+#[0-9A-Fa-f]{6}\s*;")
 PMENU_LINE = re.compile(r"^(PMenu\.([A-Za-z]+):)(\s*)(#[0-9A-Fa-f]{6})(.*)$", re.MULTILINE)
 
 
@@ -103,8 +103,7 @@ def regenerate_assets() -> None:
 
 
 def main() -> None:
-    if not CONF.is_file():
-        write_default(CONF)
+    ensure(CONF)
     colors = load(CONF)
 
     changed = 0

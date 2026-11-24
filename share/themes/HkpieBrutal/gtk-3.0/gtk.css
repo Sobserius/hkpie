@@ -2,21 +2,21 @@
    Neubrutalism: square blocks, heavy ink outlines, hard shadows, flat fills.
    Palette sampled from ~/Pictures/hkpiewallpaper.png. */
 
-@define-color cream  #EAE7AA;
-@define-color butter #F6F098;
-@define-color paper  #F7F7F7;
-@define-color blush  #F0A090;
-@define-color tan    #C3AF8D;
-@define-color mocha  #A79071;
-@define-color ink    #474333;
-@define-color deep   #2E2B21;
+@define-color background  #EAE7AA;
+@define-color highlight #F6F098;
+@define-color surface  #F7F7F7;
+@define-color accent  #F0A090;
+@define-color muted    #C3AF8D;
+@define-color muted-dark  #A79071;
+@define-color outline    #474333;
+@define-color shadow   #2E2B21;
 
 * {
     -GtkWidget-focus-line-width: 0;
     -GtkWidget-focus-padding: 2;
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-    color: @ink;
+    color: @outline;
 }
 
 .background,
@@ -30,17 +30,17 @@ window.background,
 .textview,
 .entry,
 .view {
-    background-color: @cream;
-    color: @ink;
+    background-color: @background;
+    color: @outline;
 }
 
 headerbar,
 headerbar.top,
 .titlebar {
-    background-color: @butter;
-    color: @deep;
+    background-color: @highlight;
+    color: @shadow;
     border: 0;
-    border-bottom: 5px solid @ink;
+    border-bottom: 5px solid @outline;
     box-shadow: none;
     padding: 6px;
 }
@@ -50,7 +50,7 @@ headerbar .subtitle {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: @deep;
+    color: @shadow;
 }
 
 button,
@@ -80,11 +80,11 @@ notebook > header,
 .notebook,
 .statusbar,
 toolbar {
-    background-color: @paper;
-    color: @ink;
-    border: 3px solid @ink;
+    background-color: @surface;
+    color: @outline;
+    border: 3px solid @outline;
     border-radius: 0;
-    box-shadow: 3px 3px 0 @ink;
+    box-shadow: 3px 3px 0 @outline;
     padding: 5px 10px;
 }
 
@@ -96,23 +96,23 @@ button:active,
 menuitem:hover,
 .popover:hover,
 .sidebar row:hover {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 button:active,
 button:checked {
-    box-shadow: 1px 1px 0 @ink;
+    box-shadow: 1px 1px 0 @outline;
 }
 
 button.suggested-action {
-    background-color: @butter;
-    color: @deep;
+    background-color: @highlight;
+    color: @shadow;
 }
 
 button.destructive-action {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 :selected,
@@ -122,8 +122,8 @@ row:selected,
 .treeview.view:selected,
 .textview:selected,
 label:selected {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 row,
@@ -132,16 +132,16 @@ row,
 .flowboxchild,
 .calendar,
 .calendar-grid {
-    background-color: @cream;
-    color: @ink;
-    border-bottom: 2px solid @mocha;
+    background-color: @background;
+    color: @outline;
+    border-bottom: 2px solid @muted-dark;
     border-radius: 0;
 }
 
 headerbar entry,
 entry {
-    background-color: @paper;
-    border: 3px solid @ink;
+    background-color: @surface;
+    border: 3px solid @outline;
     border-radius: 0;
 }
 
@@ -149,36 +149,36 @@ progressbar,
 progressbar progress,
 scale progress,
 scale highlight {
-    background-color: @blush;
-    border: 2px solid @ink;
+    background-color: @accent;
+    border: 2px solid @outline;
     border-radius: 0;
 }
 
 scale slider,
 scale.slider {
-    background-color: @butter;
-    border: 3px solid @ink;
+    background-color: @highlight;
+    border: 3px solid @outline;
     border-radius: 0;
 }
 
 checkbutton,
 radiobutton,
 switch {
-    border: 3px solid @ink;
+    border: 3px solid @outline;
     border-radius: 0;
-    background-color: @paper;
+    background-color: @surface;
 }
 
 checkbutton:checked,
 radiobutton:checked,
 switch:checked {
-    background-color: @blush;
+    background-color: @accent;
 }
 
 scrollbar,
 scrollbar slider {
-    background-color: @tan;
-    border: 2px solid @ink;
+    background-color: @muted;
+    border: 2px solid @outline;
     border-radius: 0;
     min-width: 12px;
     min-height: 12px;
@@ -186,21 +186,21 @@ scrollbar slider {
 
 separator,
 .headerbar-separator {
-    background-color: @ink;
+    background-color: @outline;
     min-width: 3px;
     min-height: 3px;
 }
 
 tooltip,
 .tooltip {
-    background-color: @paper;
-    border: 3px solid @ink;
+    background-color: @surface;
+    border: 3px solid @outline;
     border-radius: 0;
-    box-shadow: 4px 4px 0 @ink;
+    box-shadow: 4px 4px 0 @outline;
 }
 
 placeholder,
 .dim-label {
-    color: @mocha;
+    color: @muted-dark;
     font-weight: 700;
 }

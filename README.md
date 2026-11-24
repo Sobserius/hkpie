@@ -17,16 +17,17 @@ icons, and a **Bibata Modern Ice** cursor.
 
 ## 🎨 Palette (from hkpiewallpaper.png)
 
-| Name    | Hex       | Where it comes from in the wallpaper        |
-|---------|-----------|---------------------------------------------|
-| `cream` | `#EAE7AA` | Dominant pale yellow-green backdrop (~82%)  |
-| `butter`| `#F6F098` | Bright buttery yellow highlights             |
-| `paper` | `#F7F7F7` | White eye / shine highlights                 |
-| `blush` | `#F0A090` | Coral-pink cheek blush (accent)              |
-| `tan`   | `#C3AF8D` | Warm tan shading                             |
-| `mocha` | `#A79071` | Deeper warm shading                          |
-| `ink`   | `#474333` | Dark olive "lineart" outline                 |
-| `deep`  | `#2E2B21` | Darkest outline shade (shadows / urgency)    |
+| Role           | Hex       | Controls                                      |
+|----------------|-----------|-----------------------------------------------|
+| `background`   | `#EAE7AA` | whole-screen filler, window backgrounds       |
+| `surface`      | `#F7F7F7` | cards, inputs, menus, lock card               |
+| `highlight`    | `#F6F098` | header bars, primary fills, lock ring         |
+| `accent`       | `#F0A090` | selection, active border, hover, typing arcs  |
+| `foreground`   | `#474333` | normal text                                   |
+| `outline`      | `#474333` | heavy borders and lineart                     |
+| `shadow`       | `#2E2B21` | hard offset slabs, pmenu ring, urgency        |
+| `muted`        | `#C3AF8D` | scrollbars, grid dots                         |
+| `muted-dark`   | `#A79071` | deeper shading                                |
 
 The whole rice — i3 borders, picom shadows, dunst notifications, lock screen,
 GTK overrides, icons, and the pmenu X resources — uses only these colors.
@@ -35,7 +36,8 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
 
 Press `Mod+Shift+t` (or pick **Rice → Edit theme** in `Mod+d`) to open
 `~/.config/hkpie/palette.conf` in nano inside kitty. The file contains only the
-eight `name=#HEX` lines above — no exports, no CSS, no comments. A small daemon
+role=`#HEX` lines above — no exports, no CSS, no comments. `accent` is the one
+you want for the active color. A small daemon
 started by i3 watches it and re-renders the GTK 3/4 themes, pmenu X resources,
 lock image, preview, and merged X resources as soon as you save.
 
@@ -43,24 +45,24 @@ lock image, preview, and merged X resources as soon as you save.
 
 ## ✨ What's inside
 
-* **i3wm** — 5px ink outline borders with no title bars or tab/stack headers, plain split
-  layouts, 12px gaps, named workspaces (pressing `Mod+1` always goes to 1, never
-  toggles back), blush-red active border matching the GTK selection, nagbar exit
-  prompt. All binds use a modifier; even resize mode uses `Mod+h/j/k/l` and
+* **i3wm** — 5px `outline` borders with no title bars or tab/stack headers, plain
+  split layouts, 12px gaps, named workspaces (pressing `Mod+1` always goes to 1,
+  never toggles back), `accent` active border matching the GTK selection, nagbar
+  exit prompt. All binds use a modifier; even resize mode uses `Mod+h/j/k/l` and
   `Mod+Escape` (no bare-key binds).
 * **picom** — zero rounded corners, rock-hard 12px offset slabs with zero blur, full
-  opacity, in the wallpaper's darkest ink; no dimming, with short appear/disappear
-  animations on window open/close.
+  opacity, in `shadow`; no dimming, with short appear/disappear animations on
+  window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
-  a flat cream filler, a square paper card showing the current time/date and a
-  hard ink outline, plus a fat butter ring below it with a scaled dark ink line
-  and a +12/+12 ink slab shadow like picom. The ring echoes the pmenu pie slices:
-  blush typing arcs, dark slab separators, and clear WRONG/CHECK text; the EN/RU
-  hint stays on the card.
+  a flat `background` filler, a square `surface` card showing the current
+  time/date and a hard `outline`, plus a fat `highlight` ring with a scaled
+  `shadow` line and a +12/+12 slab shadow like picom. The ring echoes the pmenu
+  pie slices: `accent` typing arcs, dark separators, and clear WRONG/CHECK text;
+  the EN/RU hint stays on the card.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
-* **pmenu menu** — `Mod+d` opens a pie menu modelled on the lock ring: a paper
-  centre, butter slices, a blush active arc, deep ink separators and rim, plus the
-  hard dark slab shadow. No fullscreen Electron overlay.
+* **pmenu menu** — `Mod+d` opens a pie menu modelled on the lock ring: a `surface`
+  centre, `highlight` slices, an `accent` active arc, `shadow` separators and rim,
+  plus the hard dark slab shadow. No fullscreen Electron overlay.
 * **Custom apps** — `kitty` as the default terminal (`$TERMINAL`, PCManFM/libfm,
   and pmenu terminal apps), `pavucontrol`, PCManFM/Thunar,
   fullscreen/window/region screenshots copied to the clipboard, notification
@@ -227,14 +229,14 @@ Slices:
 * **Files** — Nemo with pcmanfm/Thunar fallback
 * **Screenshot** — its own pie slice with the Retrosmart camera/screenshot icon;
   its entries are plain text: Fullscreen, Active window, Region
-* **Rice** — reload, compositor reload, lock, suspend
+* **Rice** — reload, edit palette, compositor reload, lock, suspend
 
 pmenu treats any output starting with `$` as a dynamic-submenu command, so the
 action commands are wrapped in `sh -c '...'`; that is why Screenshot works now.
 
 The look comes from X resources at `~/.config/pmenu/Xresources` plus a small
-patched build of pmenu (paper centre, butter ring, blush active arc, deep ink
-line/separators), loaded automatically by i3. The dark slab around the whole
+patched build of pmenu (`surface` centre, `highlight` ring, `accent` active arc,
+`shadow` line/separators), loaded automatically by i3. The dark slab around the whole
 pie is picom's rock-hard offset shadow, matching the lock ring and app windows.
 Icons come from `ICONPATH` pointing at `~/.local/share/icons/retrosmart-pmenu/48x48/apps`,
 rendered from the same Retrosmart SVGs that GTK/Nemo/dunst use.

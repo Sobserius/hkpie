@@ -1,18 +1,18 @@
 /* Hkpie Brutal — GTK4 theme ✿ (square, heavy, flat, hard-shadowed) */
 
-@define-color cream  #EAE7AA;
-@define-color butter #F6F098;
-@define-color paper  #F7F7F7;
-@define-color blush  #F0A090;
-@define-color tan    #C3AF8D;
-@define-color mocha  #A79071;
-@define-color ink    #474333;
-@define-color deep   #2E2B21;
+@define-color background  #EAE7AA;
+@define-color highlight #F6F098;
+@define-color surface  #F7F7F7;
+@define-color accent  #F0A090;
+@define-color muted    #C3AF8D;
+@define-color muted-dark  #A79071;
+@define-color outline    #474333;
+@define-color shadow   #2E2B21;
 
 * {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-    color: @ink;
+    color: @outline;
 }
 
 window,
@@ -29,15 +29,15 @@ viewport,
 flowbox,
 grid,
 box {
-    background-color: @cream;
-    color: @ink;
+    background-color: @background;
+    color: @outline;
 }
 
 headerbar,
 headerbar.top {
-    background-color: @butter;
-    color: @deep;
-    border-bottom: 5px solid @ink;
+    background-color: @highlight;
+    color: @shadow;
+    border-bottom: 5px solid @outline;
     box-shadow: none;
     padding: 6px;
 }
@@ -47,7 +47,7 @@ headerbar subtitle {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: @deep;
+    color: @shadow;
 }
 
 button,
@@ -71,11 +71,11 @@ frame,
 .statusbar,
 toolbar,
 actionbar {
-    background-color: @paper;
-    color: @ink;
-    border: 3px solid @ink;
+    background-color: @surface;
+    color: @outline;
+    border: 3px solid @outline;
     border-radius: 0;
-    box-shadow: 3px 3px 0 @ink;
+    box-shadow: 3px 3px 0 @outline;
     padding: 5px 10px;
 }
 
@@ -89,23 +89,23 @@ switch:checked,
 checkbutton:checked,
 radiobutton:checked,
 tab:checked {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 button:active,
 button:checked {
-    box-shadow: 1px 1px 0 @ink;
+    box-shadow: 1px 1px 0 @outline;
 }
 
 button.suggested-action {
-    background-color: @butter;
-    color: @deep;
+    background-color: @highlight;
+    color: @shadow;
 }
 
 button.destructive-action {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 :selected,
@@ -114,8 +114,8 @@ list row:selected,
 treeview row:selected,
 .textview:selected,
 entry:selected {
-    background-color: @blush;
-    color: @deep;
+    background-color: @accent;
+    color: @shadow;
 }
 
 row,
@@ -123,9 +123,9 @@ list row,
 flowboxchild,
 calendar,
 frame {
-    background-color: @cream;
-    color: @ink;
-    border-bottom: 2px solid @mocha;
+    background-color: @background;
+    color: @outline;
+    border-bottom: 2px solid @muted-dark;
     border-radius: 0;
 }
 
@@ -133,30 +133,30 @@ progressbar,
 progressbar progress,
 scale progress,
 scale highlight {
-    background-color: @blush;
-    border: 2px solid @ink;
+    background-color: @accent;
+    border: 2px solid @outline;
     border-radius: 0;
 }
 
 scrollbar,
 scrollbar slider {
-    background-color: @tan;
-    border: 2px solid @ink;
+    background-color: @muted;
+    border: 2px solid @outline;
     border-radius: 0;
     min-width: 12px;
     min-height: 12px;
 }
 
 separator {
-    background-color: @ink;
+    background-color: @outline;
     min-width: 3px;
     min-height: 3px;
 }
 
 tooltip,
 .tooltip {
-    background-color: @paper;
-    border: 3px solid @ink;
+    background-color: @surface;
+    border: 3px solid @outline;
     border-radius: 0;
-    box-shadow: 4px 4px 0 @ink;
+    box-shadow: 4px 4px 0 @outline;
 }
