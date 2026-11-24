@@ -1,0 +1,102 @@
+#!/usr/bin/env sh
+# Quick sanity check for the hkpie rice install ✿
+set -u
+PATH="${HOME}/.local/bin:${PATH}"
+
+fail=0
+ok()   { printf '  ✔ %s\n' "$*"; }
+bad()  { printf '  ✖ %s\n' "$*"; fail=1; }
+
+printf 'Checking hkpie rice…\n\n'
+
+# i3 config must actually parse. This caught the original broken binds.
+if command -v i3 >/dev/null 2>&1; then
+    if i3 -C -c "${HOME}/.config/i3/config" >/dev/null 2>&1; then
+        ok 'i3 config parses cleanly'
+    else
+        bad 'i3 config has syntax errors'
+    fi
+fi
+
+# Config files
+for f in \
+    "$HOME/.config/i3/config" \
+    "$HOME/.config/picom/picom.conf" \
+    "$HOME/.config/dunst/dunstrc" \
+    "$HOME/.config/kitty/kitty.conf" \
+    "$HOME/.config/gtk-3.0/settings.ini" \
+    "$HOME/.config/gtk-4.0/settings.ini" \
+    "$HOME/.config/pmenu/Xresources" \
+    "$HOME/.config/fontconfig/conf.d/99-kawaii-rice.conf" \
+    "$HOME/.local/bin/rice-shot" \
+    "$HOME/.local/bin/rice-lock" \
+    "$HOME/.local/bin/rice-menu" \
+    "$HOME/.local/bin/rice-menu-spec.py" \
+    "$HOME/.local/bin/rice-clipboard.py"; do
+    if [ -f "$f" ]; then ok "$(basename "$f") installed"; else bad "missing $f"; fi
+done
+
+# GTK theme actually installed (settings.ini points at it)
+for d in "$HOME/.themes/HkpieBrutal" "$HOME/.local/share/themes/HkpieBrutal"; do
+    if [ -f "$d/gtk-3.0/gtk.css" ]; then ok "HkpieBrutal GTK theme installed"; break; fi
+done
+[ -f "$HOME/.themes/HkpieBrutal/gtk-3.0/gtk.css" ] || \
+[ -f "$HOME/.local/share/themes/HkpieBrutal/gtk-3.0/gtk.css" ] || \
+    bad 'HkpieBrutal GTK theme missing'
+
+# Wallpaper + generated assets
+if [ -f "${HOME}/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png" ]; then
+    ok 'wallpaper installed'
+elif [ -f "${HOME}/Pictures/hkpiewallpaper.png" ]; then
+    ok 'wallpaper found in ~/Pictures (run rice-wallpaper after copying)'
+else
+    bad 'hkpiewallpaper.png not found'
+fi
+
+if [ -f "${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png" ]; then
+    ok 'lock-screen image generated'
+else
+    bad 'lock-screen image missing'
+fi
+
+if [ -f "${HOME}/.local/share/icons/retrosmart-icon-theme/index.theme" ]; then
+    count=$(find "${HOME}/.local/share/icons/retrosmart-icon-theme/scalable" -name '*.svg' 2>/dev/null | wc -l)
+    if [ "$count" -gt 0 ]; then
+        ok "Retrosmart icon theme ($count SVGs)"
+    else
+        bad 'Retrosmart has no icons'
+    fi
+else
+    bad 'Retrosmart icon theme missing'
+fi
+
+if [ -f "${HOME}/.local/share/icons/retrosmart-pmenu/48x48/apps/firefox.png" ]; then
+    ok 'Retrosmart pmenu icons generated'
+else
+    bad 'Retrosmart pmenu icons missing'
+fi
+
+if [ -f "${HOME}/.icons/Bibata-Modern-Ice/cursors/arrow" ]; then
+    ok 'Bibata Modern Ice cursor installed'
+else
+    bad 'Bibata Modern Ice cursor missing'
+fi
+
+# Commands
+for cmd in i3 picom dunst i3lock kitty pavucontrol scrot feh pmenu xrdb rsvg-convert firefox; do
+    if command -v "$cmd" >/dev/null 2>&1; then ok "$cmd in PATH"; else bad "$cmd not found"; fi
+done
+# Either file manager is fine; the rice prefers pcmanfm and falls back to thunar.
+if command -v pcmanfm >/dev/null 2>&1 || command -v thunar >/dev/null 2>&1; then
+    ok "file manager (pcmanfm/thunar) in PATH"
+else
+    bad "no file manager found"
+fi
+
+printf '\n'
+if [ "$fail" -eq 0 ]; then
+    printf 'All good 🌸\n'
+else
+    printf 'Some things are missing — see above.\n'
+fi
+exit "$fail"

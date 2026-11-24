@@ -1,0 +1,205 @@
+# ════════════════════════════════════════════════════════════════════════════
+#  hkpie rice · i3wm  ✿  kawaii neubrutalist
+#  Palette sampled from ~/Pictures/hkpiewallpaper.png
+#  cream #EAE7AA · butter #F6F098 · paper #F7F7F7 · blush #F0A090
+#  tan   #C3AF8D · mocha  #A79071 · ink   #474333 · deep  #2E2B21
+# ════════════════════════════════════════════════════════════════════════════
+
+set $mod Mod4
+# Kitty is the default terminal everywhere; Mod+Shift+Return is kept as an
+# explicit kitty shortcut.
+set $term kitty
+set $kitty kitty
+set $browser firefox
+set $files thunar
+set $mixer pavucontrol
+# ~/.local/bin is not on PATH in the X session; use absolute paths.
+set $menu /home/sob/.local/bin/rice-menu
+
+set $cream  "#EAE7AA"
+set $butter "#F6F098"
+set $paper  "#F7F7F7"
+set $blush  "#F0A090"
+set $tan    "#C3AF8D"
+set $mocha  "#A79071"
+set $ink    "#474333"
+set $deep   "#2E2B21"
+
+# ── General feel ────────────────────────────────────────────────────────────
+font pango:JetBrains Mono 11
+focus_follows_mouse no
+mouse_warping output
+workspace_auto_back_and_forth no
+focus_wrapping force
+
+# Neubrutalism: heavy ink outlines, flat fills, hard geometry, no softness.
+# `pixel` gives a 5px outline without the title bar; `normal` made Firefox's
+# popups/previews look like tiny titled windows.
+new_window pixel 5
+new_float pixel 5
+default_border pixel 5
+default_floating_border pixel 5
+hide_edge_borders none
+gaps inner 12
+gaps outer 8
+smart_gaps off
+
+# No status bar: use the full viewport. Plain splits only — no tabbed/stacked
+# container headers.
+gaps top 8
+workspace_layout default
+
+# i3 colors: border, background, text, indicator
+client.focused          $blush  $blush  $deep   $blush
+client.focused_inactive $ink    $cream  $ink    $tan
+client.unfocused        $mocha  $cream  $ink    $tan
+client.urgent           $deep   $blush  $paper  $paper
+client.placeholder      $cream  $cream  $ink    $cream
+client.background       $cream
+
+# ── Workspaces ──────────────────────────────────────────────────────────────
+set $ws1 "1: 🌸"
+set $ws2 "2: 🌐"
+set $ws3 "3: 📁"
+set $ws4 "4: 🎵"
+set $ws5 "5: 💻"
+set $ws6 "6: 🧸"
+set $ws7 "7: 🌙"
+set $ws8 "8: ✿"
+set $ws9 "9: ⚙"
+set $ws10 "0: 💖"
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+assign [class="Firefox"]      $ws2
+assign [class="Thunar"]       $ws3
+assign [class="pcmanfm"]      $ws3
+assign [class="pcmanfm-qt"]   $ws3
+assign [class="Pavucontrol"]  $ws4
+# kitty deliberately NOT assigned: terminals must open on the current workspace.
+
+# Firefox tab previews, autocomplete menus, context menus and tooltips are
+# separate X windows. Keep the 5px ink outline on real app windows only.
+for_window [window_type="menu"] border none
+for_window [window_type="popup_menu"] border none
+for_window [window_type="dropdown_menu"] border none
+for_window [window_type="tooltip"] border none
+for_window [window_type="utility"] border none
+for_window [window_type="dialog"] border none
+
+# ── Launching ───────────────────────────────────────────────────────────────
+bindsym $mod+Return exec --no-startup-id $term
+bindsym $mod+Shift+Return exec --no-startup-id $kitty
+bindsym $mod+e exec --no-startup-id sh -c 'command -v pcmanfm >/dev/null 2>&1 && exec pcmanfm || exec thunar'
+bindsym $mod+b exec --no-startup-id $browser
+bindsym $mod+d exec --no-startup-id $menu
+bindsym $mod+v exec --no-startup-id sh -c 'command -v pavucontrol >/dev/null 2>&1 && exec pavucontrol'
+
+# ── Focus / move ────────────────────────────────────────────────────────────
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+bindsym $mod+a focus parent
+bindsym $mod+space focus mode_toggle
+bindsym $mod+f fullscreen toggle
+bindsym $mod+t floating toggle
+bindsym $mod+Shift+space floating toggle
+
+# ── Resize mode ─────────────────────────────────────────────────────────────
+# Bare h/j/k/l are OK *only* inside this explicit mode; all global binds still
+# use Mod. Mod+h/j/k/l are accepted too, for consistency.
+set $mode_resize RESIZE-hjkl-or-Mod-hjkl-Esc
+mode $mode_resize {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym Left  resize shrink width 10 px or 10 ppt
+    bindsym Down  resize grow height 10 px or 10 ppt
+    bindsym Up    resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Escape mode default
+    bindsym Return mode default
+
+    bindsym $mod+h resize shrink width 10 px or 10 ppt
+    bindsym $mod+j resize grow height 10 px or 10 ppt
+    bindsym $mod+k resize shrink height 10 px or 10 ppt
+    bindsym $mod+l resize grow width 10 px or 10 ppt
+    bindsym $mod+Left  resize shrink width 10 px or 10 ppt
+    bindsym $mod+Down  resize grow height 10 px or 10 ppt
+    bindsym $mod+Up    resize shrink height 10 px or 10 ppt
+    bindsym $mod+Right resize grow width 10 px or 10 ppt
+    bindsym $mod+Escape mode default
+    bindsym $mod+Return mode default
+}
+bindsym $mod+r mode $mode_resize
+
+# ── Utility ─────────────────────────────────────────────────────────────────
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+s exec --no-startup-id sh -c '$HOME/.local/bin/rice-shot full'
+bindsym $mod+Shift+o exec --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
+bindsym $mod+Shift+p exec --no-startup-id sh -c '$HOME/.local/bin/rice-reload'
+
+bindsym $mod+Shift+x exec --no-startup-id sh -c '$HOME/.local/bin/rice-lock'
+bindsym $mod+n exec --no-startup-id sh -c 'command -v dunstctl >/dev/null 2>&1 && dunstctl history-pop'
+bindsym $mod+Shift+n exec --no-startup-id sh -c 'command -v dunstctl >/dev/null 2>&1 && dunstctl close'
+
+# Wrap in sh -c so i3's command parser never mistakes nagbar's -B arguments
+# for i3 commands (the old bare form threw "Expected one of these tokens").
+bindsym $mod+Shift+e exec --no-startup-id sh -c 'i3-nagbar -t warning -m "leave the pastel garden? (>_<)" -B "yes bye ♡" "i3 exit" -B "stay here!" "true"'
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioPlay        exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext        exec --no-startup-id playerctl next
+bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
+
+# ── Autostart ───────────────────────────────────────────────────────────────
+# exec_always runs when i3 starts/restarts. For a live rice update use
+# Mod+Shift+p (rice-reload), which restarts dunst/picom and re-applies borders.
+# Each command is idempotent (kills old instances first).
+exec_always --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
+exec_always --no-startup-id xrdb -merge "$HOME/.config/pmenu/Xresources"
+exec_always --no-startup-id setxkbmap -layout "us,ru" -option "grp:alt_shift_toggle"
+# i3 parses ';' inside sh -c as its own command separator, so use && / || only.
+exec_always --no-startup-id sh -c 'pkill -x kando 2>/dev/null || true && pkill -x picom 2>/dev/null || true && picom --config "$HOME/.config/picom/picom.conf" 2>/dev/null'
+exec_always --no-startup-id sh -c 'pkill -x dunst 2>/dev/null || true && sleep 0.5 && command -v dunst >/dev/null 2>&1 && dunst 2>/dev/null'
+exec_always --no-startup-id sh -c 'pgrep -x polkit-gnome-authentication-agent-1 >/dev/null 2>&1 || /usr/libexec/polkit-gnome-authentication-agent-1'

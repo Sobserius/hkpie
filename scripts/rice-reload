@@ -1,0 +1,57 @@
+#!/usr/bin/env sh
+# Reload the whole rice: i3, dunst, picom, wallpaper. ✿
+set -u
+
+if command -v i3-msg >/dev/null 2>&1; then
+    i3-msg reload >/dev/null 2>&1 || true
+    # reload only affects new windows; restyle the ones already open too.
+    i3-msg '[class=".*"] border pixel 5' >/dev/null 2>&1 || true
+
+    # Kill any tabbed/stacked container headers left over from an old layout.
+    i3-msg -t get_tree > /tmp/opencode/rice-i3-tree.json 2>/dev/null || true
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - <<'PY' > /tmp/opencode/rice-i3-layout-cmds 2>/dev/null || true
+import json
+try:
+    tree = json.load(open('/tmp/opencode/rice-i3-tree.json'))
+except Exception:
+    raise SystemExit
+
+def walk(node):
+    if node.get('layout') in ('tabbed', 'stacked'):
+        print('[con_id=%s] layout splith' % node['id'])
+    for key in ('nodes', 'floating_nodes'):
+        for child in node.get(key, []):
+            walk(child)
+
+walk(tree)
+PY
+        while IFS= read -r cmd; do
+            [ -n "$cmd" ] && i3-msg "$cmd" >/dev/null 2>&1 || true
+        done < /tmp/opencode/rice-i3-layout-cmds
+    fi
+fi
+
+# No status bar: make sure a stray polybar never survives a reload.
+pkill -x polybar 2>/dev/null || true
+
+if command -v dunst >/dev/null 2>&1; then
+    pkill -x dunst >/dev/null 2>&1 || true
+    dunst >/dev/null 2>&1 &
+fi
+
+if pgrep -x picom >/dev/null 2>&1; then
+    pkill -x picom >/dev/null 2>&1 || true
+    sleep 0.4
+fi
+
+PICOM_CONFIG="${HOME}/.config/picom/picom.conf"
+if command -v picom >/dev/null 2>&1 && [ -f "$PICOM_CONFIG" ]; then
+    picom --config "$PICOM_CONFIG" >/dev/null 2>&1 &
+fi
+
+"${HOME}/.local/bin/rice-wallpaper" >/dev/null 2>&1 || true
+
+if command -v notify-send >/dev/null 2>&1; then
+    notify-send 'hkpie rice ✿' 'reloaded! (´ ▽ `)ﾉ' || true
+fi

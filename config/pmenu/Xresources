@@ -1,0 +1,18 @@
+! hkpie-brutal · pmenu X resources ✿
+! Flat wallpaper fills, no ink outline; the hard offset shadow is left alone.
+! Load with: xrdb -merge ~/.config/pmenu/Xresources
+
+PMenu.background:       #F6F098
+PMenu.foreground:       #474333
+PMenu.activeBackground: #F0A090
+PMenu.activeForeground: #2E2B21
+! pmenu rejects borderWidth 0 and falls back to a 2px ring; paint that ring
+! the same butter as the slices so only the hard offset shadow remains.
+PMenu.borderWidth:      1
+PMenu.borderColor:      #F6F098
+PMenu.topShadowColor:   #F6F098
+PMenu.bottomShadowColor: #F6F098
+PMenu.diameterWidth:    340
+PMenu.shadowThickness:  0
+PMenu.faceName:         xft:Fira Sans
+PMenu.faceSize:         12

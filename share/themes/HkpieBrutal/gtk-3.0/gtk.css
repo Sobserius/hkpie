@@ -1,0 +1,206 @@
+/* Hkpie Brutal — GTK3 theme ✿
+   Neubrutalism: square blocks, heavy ink outlines, hard shadows, flat fills.
+   Palette sampled from ~/Pictures/hkpiewallpaper.png. */
+
+@define-color cream  #EAE7AA;
+@define-color butter #F6F098;
+@define-color paper  #F7F7F7;
+@define-color blush  #F0A090;
+@define-color tan    #C3AF8D;
+@define-color mocha  #A79071;
+@define-color ink    #474333;
+@define-color deep   #2E2B21;
+
+* {
+    -GtkWidget-focus-line-width: 0;
+    -GtkWidget-focus-padding: 2;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    color: @ink;
+}
+
+.background,
+window.background,
+.dialog,
+.filechooser,
+.places.sidebar,
+.sidebar,
+.list,
+.treeview.view,
+.textview,
+.entry,
+.view {
+    background-color: @cream;
+    color: @ink;
+}
+
+headerbar,
+headerbar.top,
+.titlebar {
+    background-color: @butter;
+    color: @deep;
+    border: 0;
+    border-bottom: 5px solid @ink;
+    box-shadow: none;
+    padding: 6px;
+}
+
+headerbar .title,
+headerbar .subtitle {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: @deep;
+}
+
+button,
+button.normal,
+button.flat,
+button.suggested-action,
+button.destructive-action,
+.toolbar button,
+.inked-calendar button,
+spinbutton,
+spinbutton.button,
+combobox,
+combobox > .linked,
+.entry,
+entry,
+scale trough,
+scrollbar slider,
+menuitem,
+.menu,
+.popover,
+.tooltip,
+.frame,
+frame,
+viewport,
+notebook,
+notebook > header,
+.notebook,
+.statusbar,
+toolbar {
+    background-color: @paper;
+    color: @ink;
+    border: 3px solid @ink;
+    border-radius: 0;
+    box-shadow: 3px 3px 0 @ink;
+    padding: 5px 10px;
+}
+
+button:hover,
+button.flat:hover,
+entry:focus,
+button:checked,
+button:active,
+menuitem:hover,
+.popover:hover,
+.sidebar row:hover {
+    background-color: @blush;
+    color: @deep;
+}
+
+button:active,
+button:checked {
+    box-shadow: 1px 1px 0 @ink;
+}
+
+button.suggested-action {
+    background-color: @butter;
+    color: @deep;
+}
+
+button.destructive-action {
+    background-color: @blush;
+    color: @deep;
+}
+
+:selected,
+row:selected,
+.view:selected,
+.list-row:selected,
+.treeview.view:selected,
+.textview:selected,
+label:selected {
+    background-color: @blush;
+    color: @deep;
+}
+
+row,
+.list-row,
+.treeview.view row,
+.flowboxchild,
+.calendar,
+.calendar-grid {
+    background-color: @cream;
+    color: @ink;
+    border-bottom: 2px solid @mocha;
+    border-radius: 0;
+}
+
+headerbar entry,
+entry {
+    background-color: @paper;
+    border: 3px solid @ink;
+    border-radius: 0;
+}
+
+progressbar,
+progressbar progress,
+scale progress,
+scale highlight {
+    background-color: @blush;
+    border: 2px solid @ink;
+    border-radius: 0;
+}
+
+scale slider,
+scale.slider {
+    background-color: @butter;
+    border: 3px solid @ink;
+    border-radius: 0;
+}
+
+checkbutton,
+radiobutton,
+switch {
+    border: 3px solid @ink;
+    border-radius: 0;
+    background-color: @paper;
+}
+
+checkbutton:checked,
+radiobutton:checked,
+switch:checked {
+    background-color: @blush;
+}
+
+scrollbar,
+scrollbar slider {
+    background-color: @tan;
+    border: 2px solid @ink;
+    border-radius: 0;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+separator,
+.headerbar-separator {
+    background-color: @ink;
+    min-width: 3px;
+    min-height: 3px;
+}
+
+tooltip,
+.tooltip {
+    background-color: @paper;
+    border: 3px solid @ink;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 @ink;
+}
+
+placeholder,
+.dim-label {
+    color: @mocha;
+    font-weight: 700;
+}

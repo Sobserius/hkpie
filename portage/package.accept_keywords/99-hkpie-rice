@@ -1,0 +1,3 @@
+# x11-misc/pcmanfm is currently ~amd64 on Gentoo.
+# For arm64, replace ~amd64 with ~arm64 if needed.
+x11-misc/pcmanfm ~amd64

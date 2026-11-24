@@ -1,0 +1,162 @@
+/* Hkpie Brutal — GTK4 theme ✿ (square, heavy, flat, hard-shadowed) */
+
+@define-color cream  #EAE7AA;
+@define-color butter #F6F098;
+@define-color paper  #F7F7F7;
+@define-color blush  #F0A090;
+@define-color tan    #C3AF8D;
+@define-color mocha  #A79071;
+@define-color ink    #474333;
+@define-color deep   #2E2B21;
+
+* {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    color: @ink;
+}
+
+window,
+.background,
+dialog,
+popover,
+tooltip,
+list,
+treeview,
+textview,
+entry,
+scrolledwindow,
+viewport,
+flowbox,
+grid,
+box {
+    background-color: @cream;
+    color: @ink;
+}
+
+headerbar,
+headerbar.top {
+    background-color: @butter;
+    color: @deep;
+    border-bottom: 5px solid @ink;
+    box-shadow: none;
+    padding: 6px;
+}
+
+headerbar title,
+headerbar subtitle {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: @deep;
+}
+
+button,
+button.flat,
+button.suggested-action,
+button.destructive-action,
+entry,
+textview,
+spinbutton,
+combo,
+dropdown,
+scale,
+scrollbar slider,
+switch,
+checkbutton,
+radiobutton,
+menuitem,
+tab,
+notebook,
+frame,
+.statusbar,
+toolbar,
+actionbar {
+    background-color: @paper;
+    color: @ink;
+    border: 3px solid @ink;
+    border-radius: 0;
+    box-shadow: 3px 3px 0 @ink;
+    padding: 5px 10px;
+}
+
+button:hover,
+button.flat:hover,
+menuitem:hover,
+entry:focus,
+button:checked,
+button:active,
+switch:checked,
+checkbutton:checked,
+radiobutton:checked,
+tab:checked {
+    background-color: @blush;
+    color: @deep;
+}
+
+button:active,
+button:checked {
+    box-shadow: 1px 1px 0 @ink;
+}
+
+button.suggested-action {
+    background-color: @butter;
+    color: @deep;
+}
+
+button.destructive-action {
+    background-color: @blush;
+    color: @deep;
+}
+
+:selected,
+row:selected,
+list row:selected,
+treeview row:selected,
+.textview:selected,
+entry:selected {
+    background-color: @blush;
+    color: @deep;
+}
+
+row,
+list row,
+flowboxchild,
+calendar,
+frame {
+    background-color: @cream;
+    color: @ink;
+    border-bottom: 2px solid @mocha;
+    border-radius: 0;
+}
+
+progressbar,
+progressbar progress,
+scale progress,
+scale highlight {
+    background-color: @blush;
+    border: 2px solid @ink;
+    border-radius: 0;
+}
+
+scrollbar,
+scrollbar slider {
+    background-color: @tan;
+    border: 2px solid @ink;
+    border-radius: 0;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+separator {
+    background-color: @ink;
+    min-width: 3px;
+    min-height: 3px;
+}
+
+tooltip,
+.tooltip {
+    background-color: @paper;
+    border: 3px solid @ink;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 @ink;
+}

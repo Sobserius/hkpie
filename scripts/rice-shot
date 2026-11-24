@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+# hkpie rice screenshots ✿ — save to ~/Pictures and copy to the X clipboard.
+set -u
+
+mode="${1:-full}"
+mkdir -p "${HOME}/Pictures"
+stamp="$(date +%Y-%m-%d-%H%M%S)"
+
+case "$mode" in
+    full|screen|fullscreen)
+        label="Fullscreen"
+        out="${HOME}/Pictures/rice-shot-${stamp}-full.png"
+        scrot -z "$out" || exit 1
+        ;;
+    window|active)
+        label="Active window"
+        out="${HOME}/Pictures/rice-shot-${stamp}-window.png"
+        scrot -z -u "$out" || exit 1
+        ;;
+    region|select|area)
+        label="Region"
+        out="${HOME}/Pictures/rice-shot-${stamp}-region.png"
+        scrot -z -s "$out" || exit 1
+        ;;
+    *)
+        printf 'usage: rice-shot [full|window|region]\n' >&2
+        exit 2
+        ;;
+esac
+
+clip_ok=0
+if [ -x "${HOME}/.local/bin/rice-clipboard.py" ]; then
+    nohup python3 "${HOME}/.local/bin/rice-clipboard.py" "$out" >/dev/null 2>&1 &
+    clip_ok=1
+fi
+
+if command -v notify-send >/dev/null 2>&1; then
+    if [ "$clip_ok" -eq 1 ]; then
+        notify-send "Screenshot copied ♡" "${label}: ${out}" || true
+    else
+        notify-send "Screenshot saved" "${label}: ${out}" || true
+    fi
+fi
+
+printf '%s\n' "$out"

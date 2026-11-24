@@ -1,0 +1,53 @@
+# hkpie rice · dunst notifications ✿ — sticker-like, hard ink outline
+
+[global]
+monitor = 0
+follow = keyboard
+width = 380
+height = (0, 130)
+origin = top-right
+offset = (14, 48)
+notification_limit = 8
+
+frame_width = 4
+frame_color = "#474333"
+separator_color = frame
+padding = 10
+horizontal_padding = 10
+font = "Fira Sans 11"
+format = "<b>%s</b>\n%b"
+alignment = left
+vertical_alignment = center
+markup = full
+
+icon_position = left
+icon_theme = retrosmart-icon-theme
+min_icon_size = 24
+max_icon_size = 48
+corner_radius = 0
+
+sticky_history = true
+history_length = 25
+show_indicators = yes
+sort = yes
+
+dmenu = /usr/bin/dmenu -p dunst:
+browser = /usr/bin/xdg-open
+
+[urgency_low]
+background = "#F6F098"
+foreground = "#474333"
+frame_color = "#474333"
+timeout = 6
+
+[urgency_normal]
+background = "#F7F7F7"
+foreground = "#474333"
+frame_color = "#474333"
+timeout = 8
+
+[urgency_critical]
+background = "#F0A090"
+foreground = "#2E2B21"
+frame_color = "#2E2B21"
+timeout = 0

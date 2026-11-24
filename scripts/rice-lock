@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Lock the screen with the hkpie-brutalist wallpaper. ✿
+set -u
+
+LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
+
+if command -v i3lock >/dev/null 2>&1; then
+    if [ ! -f "$LOCK_IMAGE" ] && command -v python3 >/dev/null 2>&1; then
+        python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
+    fi
+    if [ -f "$LOCK_IMAGE" ]; then
+        exec i3lock -i "$LOCK_IMAGE" -n
+    fi
+    exec i3lock -c 474333 -n
+fi
+
+# Fallback for systems using a display manager / logind instead of i3lock.
+if command -v loginctl >/dev/null 2>&1; then
+    exec loginctl lock-session
+fi
+
+printf 'rice-lock: no locker available (emerge x11-misc/i3lock with -g)\n' >&2
+exit 1

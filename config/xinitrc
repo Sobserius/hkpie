@@ -1,0 +1,14 @@
+#!/bin/sh
+# hkpie rice · startx session ✿
+set -e
+
+[ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources" || true
+
+# Apps that ask for a terminal should get kitty, never xterm.
+export TERMINAL=kitty
+
+"$HOME/.local/bin/rice-wallpaper"
+picom --config "$HOME/.config/picom/picom.conf" &
+# Kando is started from the i3 config — no need to launch it twice.
+
+exec i3

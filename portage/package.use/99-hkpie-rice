@@ -1,0 +1,3 @@
+# hkpie-rice: add per-package USE flags here if needed.
+# Example:
+# x11-terms/kitty X

@@ -1,0 +1,10 @@
+#!/bin/sh
+# hkpie rice menu — pmenu with Retrosmart icons and every visible .desktop app.
+# Apps are scanned fresh on each open (including Flatpak exports).
+set -eu
+
+ICON_ROOT="${HOME}/.local/share/icons/retrosmart-pmenu"
+export ICONPATH="${ICON_ROOT}/48x48/apps"
+
+python3 "${HOME}/.local/bin/rice-menu-spec.py" | \
+    "${HOME}/.local/bin/pmenu" -e -N PMenu -d 340

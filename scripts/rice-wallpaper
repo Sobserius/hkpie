@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+# Set (or cycle) the hkpie wallpaper. Uses feh (emerged with -g). ✿
+set -eu
+
+# shellcheck source=../palette.env
+CONFIG="${HOME}/.config/kawaii-rice/palette.env"
+if [ -f "$CONFIG" ]; then
+    # shellcheck disable=SC1090
+    . "$CONFIG"
+fi
+
+WALLPAPER="${RICE_WALLPAPER:-${HOME}/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png}"
+
+# "rice-wallpaper next" cycles through images in the backgrounds folder.
+if [ "${1:-}" = "next" ]; then
+    dir=$(dirname "$WALLPAPER")
+    current=$(readlink -f "$WALLPAPER" 2>/dev/null || printf '%s' "$WALLPAPER")
+    next=""
+    found=0
+    first=""
+    for candidate in "$dir"/*.png "$dir"/*.jpg "$dir"/*.jpeg; do
+        [ -f "$candidate" ] || continue
+        [ -n "$first" ] || first=$candidate
+        if [ "$found" -eq 1 ]; then
+            next=$candidate
+            break
+        fi
+        if [ "$(readlink -f "$candidate" 2>/dev/null || printf '%s' "$candidate")" = "$current" ]; then
+            found=1
+        fi
+    done
+    [ -n "$next" ] || next=$first
+    [ -z "$next" ] || WALLPAPER=$next
+fi
+
+if [ ! -f "$WALLPAPER" ]; then
+    printf 'rice-wallpaper: missing %s\n' "$WALLPAPER" >&2
+    exit 1
+fi
+
+if command -v feh >/dev/null 2>&1; then
+    exec feh --bg-fill "$WALLPAPER"
+fi
+
+# Fallback: at least keep the pastel backdrop
+command -v xsetroot >/dev/null 2>&1 && xsetroot -solid '#EAE7AA'
+printf 'rice-wallpaper: feh not found, set solid cream background only\n' >&2

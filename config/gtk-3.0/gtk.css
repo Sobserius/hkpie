@@ -1,0 +1,92 @@
+/* hkpie rice · GTK3 user overrides ✿
+   Neubrutalism: square corners, 3px ink outlines, hard offset shadows. */
+
+@define-color cream #EAE7AA;
+@define-color butter #F6F098;
+@define-color paper #F7F7F7;
+@define-color blush #F0A090;
+@define-color tan #C3AF8D;
+@define-color ink #474333;
+@define-color deep #2E2B21;
+
+window.background,
+.background {
+    background-color: @cream;
+    color: @ink;
+}
+
+headerbar,
+.titlebar {
+    background-color: @butter;
+    color: @deep;
+    border-bottom: 4px solid @ink;
+}
+
+button,
+button.normal,
+.entry,
+entry,
+combobox,
+spinbutton,
+scale trough {
+    background-color: @paper;
+    color: @ink;
+    border: 3px solid @ink;
+    border-radius: 0;
+    padding: 5px 10px;
+    box-shadow: 3px 3px 0 @ink;
+}
+
+button:hover,
+entry:focus,
+button:checked {
+    background-color: @blush;
+    color: @deep;
+}
+
+button:active {
+    background-color: @butter;
+    box-shadow: 1px 1px 0 @ink;
+}
+
+menuitem,
+.menu,
+tooltip {
+    background-color: @paper;
+    color: @ink;
+    border: 3px solid @ink;
+    border-radius: 0;
+}
+
+:selected,
+row:selected,
+.view:selected {
+    background-color: @blush;
+    color: @deep;
+}
+
+flowboxchild,
+frame,
+viewport,
+notebook > header,
+.notebook {
+    background-color: @cream;
+    color: @ink;
+    border: 3px solid @ink;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 @ink;
+}
+
+scrollbar slider {
+    background-color: @tan;
+    border: 2px solid @ink;
+    border-radius: 0;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+progressbar progress {
+    background-color: @blush;
+    border: 2px solid @ink;
+    border-radius: 0;
+}
