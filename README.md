@@ -44,7 +44,8 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   opacity, in the wallpaper's darkest ink; no dimming, with short appear/disappear
   animations on window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
-  a blurred, palette-colored lock image generated from your wallpaper.
+  a blurred wallpaper card showing the current time/date, a hard ink outline,
+  keyboard-layout and failed-attempt indicators, and a clean password prompt.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
 * **pmenu menu** — `Mod+d` opens a pie menu with butter slices, a blush active slice,
   no ink outline, Retrosmart icons, the hard dark slab ring, and no fullscreen Electron
@@ -175,7 +176,7 @@ requested.
 | `Mod + v` | pavucontrol volume mixer |
 | `Mod + n` | Show notification history (dunst) |
 | `Mod + Shift + n` | Close the newest notification |
-| `Mod + Shift + x` | Lock screen with the generated hard-shadow image |
+| `Mod + Shift + x` | Lock with live time/date card and EN/RU layout hint |
 | `Mod + 1…0` | Switch workspace |
 | `Mod + Shift + 1…0` | Move focused window to workspace |
 | `Mod + h/j/k/l` or arrows | Focus window |

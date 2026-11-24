@@ -5,13 +5,16 @@ set -u
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 
 if command -v i3lock >/dev/null 2>&1; then
-    if [ ! -f "$LOCK_IMAGE" ] && command -v python3 >/dev/null 2>&1; then
+    # Regenerate on every lock so the clock and date are current.
+    if command -v python3 >/dev/null 2>&1; then
         python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
     fi
+    # -e avoids a PAM delay from accidental Enter, -f shows failed attempts,
+    # -k shows the current EN/RU layout while typing the password.
     if [ -f "$LOCK_IMAGE" ]; then
-        exec i3lock -i "$LOCK_IMAGE" -n
+        exec i3lock -n -e -f -k -i "$LOCK_IMAGE"
     fi
-    exec i3lock -c 474333 -n
+    exec i3lock -n -e -f -k -c 474333
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.

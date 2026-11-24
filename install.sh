@@ -354,7 +354,7 @@ cat <<EOF
   Log out and select i3, or press Mod+Shift+c to reload.
   • Mod+d opens the pmenu pie menu with Retrosmart icons (no Kando overlay).
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
-  • Mod+Shift+x locks with the hard-shadow lock image.
+  • Mod+Shift+x locks with a live time/date card, EN/RU hint, and hard shadow.
   • Colors: cream #EAE7AA · butter #F6F098 · blush #F0A090 · ink #474333
   • Backups: ${BACKUP_DIR}
 

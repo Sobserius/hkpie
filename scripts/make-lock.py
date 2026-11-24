@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Build the pastel-brutalist lock screen image from hkpiewallpaper.png. ✿"""
+"""Build the hkpie lock screen from the wallpaper, with a live-at-lock clock. ✿"""
 from __future__ import annotations
 
+import os
 import pathlib
+import re
+import subprocess
 import sys
+from datetime import datetime
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
 HOME = pathlib.Path.home()
 SOURCE = HOME / ".local/share/backgrounds/kawaii-rice/hkpiewallpaper.png"
@@ -17,16 +21,85 @@ DEEP = (46, 43, 33, 255)
 PAPER = (247, 247, 247, 255)
 BUTTER = (246, 240, 152, 255)
 BLUSH = (240, 160, 144, 255)
+CREAM = (234, 231, 170, 255)
+
+DAYS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
+MONTHS = ("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+          "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
 
 
-def font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    for path in (
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
-    ):
-        if pathlib.Path(path).is_file():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default()
+def resolve_font(pattern: str, fallback: str, size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    path = fallback
+    try:
+        found = subprocess.check_output(
+            ["fc-match", "-f", "%{file}", pattern],
+            text=True,
+            stderr=subprocess.DEVNULL,
+            timeout=2,
+        ).strip()
+        if found and pathlib.Path(found).is_file():
+            path = found
+    except (OSError, subprocess.SubprocessError):
+        pass
+    try:
+        return ImageFont.truetype(path, size)
+    except OSError:
+        return ImageFont.load_default()
+
+
+def sans(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    return resolve_font(
+        "Fira Sans:style=Bold",
+        "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
+        size,
+    )
+
+
+def mono(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    return resolve_font(
+        "JetBrains Mono:style=Bold",
+        "/usr/share/fonts/dejavu/DejaVuSansMono-Bold.ttf",
+        size,
+    )
+
+
+def screen_size() -> tuple[int, int]:
+    env_w = os.environ.get("RICE_LOCK_WIDTH", "")
+    env_h = os.environ.get("RICE_LOCK_HEIGHT", "")
+    if env_w.isdigit() and env_h.isdigit():
+        return int(env_w), int(env_h)
+    try:
+        out = subprocess.check_output(
+            ["xrandr", "--current"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+            timeout=2,
+        )
+        match = re.search(r"\sconnected\s+(?:primary\s+)?(\d+)x(\d+)", out)
+        if match:
+            return int(match.group(1)), int(match.group(2))
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return 1920, 1080
+
+
+def chip(
+    draw: ImageDraw.ImageDraw,
+    box: tuple[int, int, int, int],
+    fill: tuple[int, int, int, int],
+    label: str,
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+    width: int = 6,
+) -> None:
+    draw.rectangle((box[0] + 14, box[1] + 14, box[2] + 14, box[3] + 14), fill=DEEP)
+    draw.rectangle(box, fill=fill, outline=INK, width=width)
+    draw.text(
+        ((box[0] + box[2]) // 2, (box[1] + box[3]) // 2),
+        label,
+        font=font,
+        fill=DEEP,
+        anchor="mm",
+    )
 
 
 def main() -> None:
@@ -36,31 +109,44 @@ def main() -> None:
     if not src.is_file():
         raise SystemExit(f"lock image: missing wallpaper {src}")
 
+    width, height = screen_size()
     image = Image.open(src).convert("RGBA")
-    if image.size != (1920, 1080):
-        image = image.resize((1920, 1080), Image.Resampling.LANCZOS)
-
-    image = image.filter(ImageFilter.GaussianBlur(14))
-    shade = Image.new("RGBA", image.size, (46, 43, 33, 88))
-    image = Image.alpha_composite(image, shade)
+    image = ImageOps.fit(image, (width, height), method=Image.Resampling.LANCZOS)
+    image = image.filter(ImageFilter.GaussianBlur(12))
+    image = Image.alpha_composite(
+        image, Image.new("RGBA", (width, height), (46, 43, 33, 96))
+    )
     draw = ImageDraw.Draw(image)
 
-    w, h = image.size
-    card = (w // 2 - 260, h // 2 - 120, w // 2 + 260, h // 2 + 120)
-    # Neubrutalist lock card: square, hard shadow, heavy outline.
-    draw.rectangle((card[0] + 14, card[1] + 14, card[2] + 14, card[3] + 14), fill=DEEP)
-    draw.rectangle(card, fill=PAPER, outline=INK, width=8)
+    cx, cy = width // 2, height // 2
+    card_w = min(760, width - 80)
+    card_h = min(460, height - 80)
+    card = (cx - card_w // 2, cy - card_h // 2,
+            cx + card_w // 2, cy + card_h // 2)
 
-    draw.text((w // 2, h // 2 - 32), "LOCKED", font=font(54), fill=DEEP, anchor="mm")
-    draw.rectangle((w // 2 - 190, h // 2 + 18, w // 2 + 190, h // 2 + 68),
-                   fill=BUTTER, outline=INK, width=5)
-    draw.text((w // 2, h // 2 + 43), "PRESS ANY KEY",
-              font=font(24), fill=INK, anchor="mm")
-    draw.rectangle((w // 2 - 30, h // 2 + 84, w // 2 + 30, h // 2 + 114),
-                   fill=BLUSH, outline=INK, width=5)
+    # Neubrutalist lock card: square, 18px hard shadow, heavy ink outline.
+    draw.rectangle(
+        (card[0] + 18, card[1] + 18, card[2] + 18, card[3] + 18), fill=DEEP
+    )
+    draw.rectangle(card, fill=PAPER, outline=INK, width=10)
+
+    now = datetime.now()
+    time_text = now.strftime("%H:%M")
+    date_text = f"{DAYS[now.weekday()]} {now.day:02d} {MONTHS[now.month - 1]}"
+
+    chip(draw, (card[0] + 56, card[1] + 38, card[0] + 250, card[1] + 94),
+         BUTTER, "HKPIE", sans(30), width=5)
+    draw.text((cx, card[1] + 196), time_text, font=mono(132), fill=DEEP, anchor="mm")
+    draw.rectangle((cx - 180, card[1] + 276, cx + 180, card[1] + 288), fill=BLUSH)
+    draw.text((cx, card[1] + 326), date_text, font=sans(38), fill=INK, anchor="mm")
+
+    chip(draw, (cx - 270, card[3] - 112, cx + 270, card[3] - 42),
+         CREAM, "TYPE PASSWORD / ENTER", sans(28), width=5)
+    draw.text((card[2] - 26, card[1] + 26), "ALT+SHIFT : EN/RU",
+              font=sans(20), fill=PAPER, anchor="ra")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    image.convert("RGB").save(OUT, quality=92)
+    image.convert("RGB").save(OUT, "PNG", optimize=True)
     print(f"wrote {OUT}")
 
 
