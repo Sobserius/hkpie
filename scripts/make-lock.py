@@ -9,7 +9,7 @@ import subprocess
 import sys
 from datetime import datetime
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 HOME = pathlib.Path.home()
 SOURCE = HOME / ".local/share/backgrounds/kawaii-rice/hkpiewallpaper.png"
@@ -112,10 +112,6 @@ def main() -> None:
     width, height = screen_size()
     image = Image.open(src).convert("RGBA")
     image = ImageOps.fit(image, (width, height), method=Image.Resampling.LANCZOS)
-    image = image.filter(ImageFilter.GaussianBlur(12))
-    image = Image.alpha_composite(
-        image, Image.new("RGBA", (width, height), (46, 43, 33, 96))
-    )
     draw = ImageDraw.Draw(image)
 
     cx, cy = width // 2, height // 2
@@ -137,8 +133,6 @@ def main() -> None:
     time_text = now.strftime("%H:%M")
     date_text = f"{DAYS[now.weekday()]} {now.day:02d} {MONTHS[now.month - 1]}"
 
-    chip(draw, (card[0] + 56, card[1] + 38, card[0] + 250, card[1] + 94),
-         BUTTER, "HKPIE", sans(30), width=5)
     draw.text((cx, card[1] + 196), time_text, font=mono(132), fill=DEEP, anchor="mm")
     draw.rectangle((cx - 180, card[1] + 276, cx + 180, card[1] + 288), fill=BLUSH)
     draw.text((cx, card[1] + 326), date_text, font=sans(38), fill=INK, anchor="mm")

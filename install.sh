@@ -362,14 +362,14 @@ info "Installing the hkpie pie-style lock indicator"
 install_i3lock_color() {
     local src="${HOME}/.local/src/i3lock-color"
     local bin="${HOME}/.local/bin/hkpie-i3lock"
-    local marker="${src}/.hkpie-thick-line"
-    local patch="${RICE_DIR}/patches/i3lock-color-hkpie-line.patch"
+    local marker="${src}/.hkpie-ring-style"
+    local patch="${RICE_DIR}/patches/i3lock-color-hkpie-ring.patch"
 
     [[ -f "${patch}" ]] || die "missing i3lock-color patch: ${patch}"
 
     if [[ -x "${bin}" ]] && [[ -f "${marker}" ]] && \
        [[ "$(git -C "${src}" rev-parse HEAD 2>/dev/null || true)" == "${I3LOCK_COLOR_COMMIT}" ]]; then
-        ok "hkpie-i3lock already installed with the thick-line patch"
+        ok "hkpie-i3lock already installed with the hkpie ring-style patch"
         return 0
     fi
 
@@ -386,7 +386,7 @@ install_i3lock_color() {
         git clone --quiet https://github.com/Raymo111/i3lock-color.git "${src}"
     fi
 
-    info "building hkpie-i3lock at ${I3LOCK_COLOR_COMMIT} with the thick-line patch"
+    info "building hkpie-i3lock at ${I3LOCK_COLOR_COMMIT} with the hkpie ring-style patch"
     git -C "${src}" reset --hard "${I3LOCK_COLOR_COMMIT}" >/dev/null
     git -C "${src}" apply "${patch}"
     touch "${marker}"

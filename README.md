@@ -44,10 +44,11 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   opacity, in the wallpaper's darkest ink; no dimming, with short appear/disappear
   animations on window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
-  a blurred wallpaper card showing the current time/date and a hard ink outline,
-  plus a fat butter ring below it with a scaled dark ink line. The ring echoes
-  the pmenu pie slices: blush typing arcs, dark slab separators, and clear
-  WRONG/CHECK text; the EN/RU hint stays on the card.
+  the sharp wallpaper, a square paper card showing the current time/date and a
+  hard ink outline, plus a fat butter ring below it with a scaled dark ink line
+  and a +12/+12 ink slab shadow like picom. The ring echoes the pmenu pie slices:
+  blush typing arcs, dark slab separators, and clear WRONG/CHECK text; the EN/RU
+  hint stays on the card.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
 * **pmenu menu** — `Mod+d` opens a pie menu modelled on the lock ring: a paper
   centre, butter slices, a blush active arc, deep ink separators and rim, plus the
@@ -257,7 +258,7 @@ hkpie/
 │   └── xinitrc
 ├── patches/
 │   ├── pmenu-hkpie-lock-ring.patch  # pmenu centre/ring/segments styling
-│   └── i3lock-color-hkpie-line.patch # scaled dark ring line
+│   └── i3lock-color-hkpie-ring.patch # scaled dark ring line + slab shadow
 ├── scripts/
 │   ├── install-portage.sh          # optional root helper
 │   ├── make-lock.py                # generates the lock-screen image

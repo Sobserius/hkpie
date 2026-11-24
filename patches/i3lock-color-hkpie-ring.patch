@@ -1,8 +1,21 @@
 diff --git a/unlock_indicator.c b/unlock_indicator.c
-index 9978a89..da0d4f8 100644
+index 9978a89..bad225a 100644
 --- a/unlock_indicator.c
 +++ b/unlock_indicator.c
-@@ -591,11 +591,12 @@ static void draw_indic(cairo_t *ctx, double ind_x, double ind_y) {
+@@ -523,6 +523,12 @@ static void draw_bar(cairo_t *ctx, double bar_x, double bar_y, double bar_width,
+ static void draw_indic(cairo_t *ctx, double ind_x, double ind_y) {
+     if (unlock_indicator &&
+         (unlock_state >= STATE_KEY_PRESSED || auth_state > STATE_AUTH_IDLE || show_indicator)) {
++        /* hkpie: hard +12/+12 slab shadow, like picom's window shadow. */
++        cairo_set_source_rgba(ctx, line16.red, line16.green, line16.blue, line16.alpha);
++        cairo_arc(ctx, ind_x + 12, ind_y + 12,
++                  BUTTON_RADIUS + (RING_WIDTH / 2.0), 0, 2 * M_PI);
++        cairo_fill(ctx);
++
+         /* Draw a (centered) circle with transparent background. */
+         cairo_set_line_width(ctx, RING_WIDTH);
+         cairo_arc(ctx, ind_x, ind_y, BUTTON_RADIUS, 0, 2 * M_PI);
+@@ -591,11 +597,12 @@ static void draw_indic(cairo_t *ctx, double ind_x, double ind_y) {
          }
          cairo_stroke(ctx);
  
