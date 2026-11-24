@@ -45,7 +45,8 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   animations on window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
   a blurred wallpaper card showing the current time/date, a hard ink outline,
-  keyboard-layout and failed-attempt indicators, and a clean password prompt.
+  keyboard-layout and failed-attempt indicators, a clean password prompt, and no
+  circular unlock indicator.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
 * **pmenu menu** — `Mod+d` opens a pie menu with butter slices, a blush active slice,
   no ink outline, Retrosmart icons, the hard dark slab ring, and no fullscreen Electron

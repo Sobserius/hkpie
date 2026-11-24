@@ -10,11 +10,11 @@ if command -v i3lock >/dev/null 2>&1; then
         python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
     fi
     # -e avoids a PAM delay from accidental Enter, -f shows failed attempts,
-    # -k shows the current EN/RU layout while typing the password.
+    # -k shows the current EN/RU layout, -u kills the round unlock indicator.
     if [ -f "$LOCK_IMAGE" ]; then
-        exec i3lock -n -e -f -k -i "$LOCK_IMAGE"
+        exec i3lock -n -e -f -k -u -i "$LOCK_IMAGE"
     fi
-    exec i3lock -n -e -f -k -c 474333
+    exec i3lock -n -e -f -k -u -c 474333
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.
