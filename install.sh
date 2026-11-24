@@ -362,9 +362,14 @@ info "Installing the hkpie pie-style lock indicator"
 install_i3lock_color() {
     local src="${HOME}/.local/src/i3lock-color"
     local bin="${HOME}/.local/bin/hkpie-i3lock"
+    local marker="${src}/.hkpie-thick-line"
+    local patch="${RICE_DIR}/patches/i3lock-color-hkpie-line.patch"
 
-    if [[ -x "${bin}" ]] && [[ "$(git -C "${src}" rev-parse HEAD 2>/dev/null || true)" == "${I3LOCK_COLOR_COMMIT}" ]]; then
-        ok "hkpie-i3lock already installed at ${I3LOCK_COLOR_COMMIT}"
+    [[ -f "${patch}" ]] || die "missing i3lock-color patch: ${patch}"
+
+    if [[ -x "${bin}" ]] && [[ -f "${marker}" ]] && \
+       [[ "$(git -C "${src}" rev-parse HEAD 2>/dev/null || true)" == "${I3LOCK_COLOR_COMMIT}" ]]; then
+        ok "hkpie-i3lock already installed with the thick-line patch"
         return 0
     fi
 
@@ -381,11 +386,10 @@ install_i3lock_color() {
         git clone --quiet https://github.com/Raymo111/i3lock-color.git "${src}"
     fi
 
-    info "building hkpie-i3lock at ${I3LOCK_COLOR_COMMIT}"
-    if ! git -C "${src}" checkout --quiet "${I3LOCK_COLOR_COMMIT}"; then
-        warn "could not check out hkpie-i3lock ${I3LOCK_COLOR_COMMIT}; using system i3lock"
-        return 0
-    fi
+    info "building hkpie-i3lock at ${I3LOCK_COLOR_COMMIT} with the thick-line patch"
+    git -C "${src}" reset --hard "${I3LOCK_COLOR_COMMIT}" >/dev/null
+    git -C "${src}" apply "${patch}"
+    touch "${marker}"
     if ! (cd "${src}" && sh ./build.sh >/dev/null 2>&1); then
         warn "hkpie-i3lock build failed; using system i3lock"
         return 0

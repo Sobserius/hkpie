@@ -1,0 +1,20 @@
+diff --git a/unlock_indicator.c b/unlock_indicator.c
+index 9978a89..da0d4f8 100644
+--- a/unlock_indicator.c
++++ b/unlock_indicator.c
+@@ -591,11 +591,12 @@ static void draw_indic(cairo_t *ctx, double ind_x, double ind_y) {
+         }
+         cairo_stroke(ctx);
+ 
+-        /* Draw an inner separator line. */
++        /* hkpie: scale the dark line with the ring and sit it on the inner
++         * edge, matching the pmenu pie ring instead of a fixed 2px hairline. */
+         if (internal_line_source != 2) {  //pretty sure this only needs drawn if it's being drawn over the inside?
+             cairo_set_source_rgba(ctx, line16.red, line16.green, line16.blue, line16.alpha);
+-            cairo_set_line_width(ctx, 2.0);
+-            cairo_arc(ctx, ind_x, ind_y, BUTTON_RADIUS - 5, 0, 2 * M_PI);
++            cairo_set_line_width(ctx, RING_WIDTH / 3.0);
++            cairo_arc(ctx, ind_x, ind_y, BUTTON_RADIUS - (RING_WIDTH / 2.0), 0, 2 * M_PI);
+             cairo_stroke(ctx);
+         }
+         if (unlock_state == STATE_KEY_ACTIVE || unlock_state == STATE_BACKSPACE_ACTIVE) {
