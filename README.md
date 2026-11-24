@@ -44,7 +44,7 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   opacity, in the wallpaper's darkest ink; no dimming, with short appear/disappear
   animations on window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
-  the sharp wallpaper, a square paper card showing the current time/date and a
+  a flat cream filler, a square paper card showing the current time/date and a
   hard ink outline, plus a fat butter ring below it with a scaled dark ink line
   and a +12/+12 ink slab shadow like picom. The ring echoes the pmenu pie slices:
   blush typing arcs, dark slab separators, and clear WRONG/CHECK text; the EN/RU

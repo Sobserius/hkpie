@@ -143,7 +143,7 @@ install_file "${WALLPAPER_SRC}" "${RICE_WALLPAPER_DST}"
 info "Generating palette assets (lock screen + preview)"
 # ---------------------------------------------------------------------------
 if python3 -c 'import PIL' >/dev/null 2>&1; then
-    python3 "${RICE_DIR}/scripts/make-lock.py" "${RICE_WALLPAPER_DST}"
+    python3 "${RICE_DIR}/scripts/make-lock.py"
     python3 "${RICE_DIR}/scripts/make-preview.py"
 else
     warn "python3 PIL not available — skipping asset generation"

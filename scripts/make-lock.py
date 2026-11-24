@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-"""Build the hkpie lock screen from the wallpaper, with a live-at-lock clock. ✿"""
+"""Build the hkpie lock screen on a flat cream filler, with a live-at-lock clock. ✿"""
 from __future__ import annotations
 
 import os
 import pathlib
 import re
 import subprocess
-import sys
 from datetime import datetime
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
 
 HOME = pathlib.Path.home()
-SOURCE = HOME / ".local/share/backgrounds/kawaii-rice/hkpiewallpaper.png"
-FALLBACK = HOME / "Pictures/hkpiewallpaper.png"
 OUT = HOME / ".local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 
 INK = (71, 67, 51, 255)
@@ -103,15 +100,10 @@ def chip(
 
 
 def main() -> None:
-    src = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else (
-        SOURCE if SOURCE.is_file() else FALLBACK
-    )
-    if not src.is_file():
-        raise SystemExit(f"lock image: missing wallpaper {src}")
-
     width, height = screen_size()
-    image = Image.open(src).convert("RGBA")
-    image = ImageOps.fit(image, (width, height), method=Image.Resampling.LANCZOS)
+    # Lock screens use a flat filler instead of the desktop wallpaper; the
+    # cream is sampled from the wallpaper palette and keeps the ring/slab crisp.
+    image = Image.new("RGBA", (width, height), CREAM)
     draw = ImageDraw.Draw(image)
 
     cx, cy = width // 2, height // 2
