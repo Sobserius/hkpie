@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Lock the screen with the hkpie-brutalist wallpaper and a pie-style ring. ✿
+# Lock the screen with a flat cream filler and a pie-style ring. ✿
 set -u
 
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
@@ -14,7 +14,7 @@ pie_lock() {
     if [ -f "$LOCK_IMAGE" ]; then
         set -- -i "$LOCK_IMAGE"
     else
-        set -- -c 474333
+        set -- -c EAE7AA
     fi
 
     # A fat butter ring, blush typing arcs, dark slab separators: the lock
@@ -54,7 +54,7 @@ if command -v i3lock >/dev/null 2>&1; then
     if [ -f "$LOCK_IMAGE" ]; then
         exec i3lock -n -e -f -i "$LOCK_IMAGE"
     fi
-    exec i3lock -n -e -f -c 474333
+    exec i3lock -n -e -f -c EAE7AA
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.

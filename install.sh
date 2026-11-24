@@ -88,6 +88,7 @@ PACKAGES=(
     x11-libs/xcb-util-xrm
     x11-libs/libxkbcommon
     dev-python/pygobject
+    dev-python/pillow
     gnome-base/librsvg
     media-libs/imlib2
     x11-libs/libXft
@@ -142,11 +143,13 @@ install_file "${WALLPAPER_SRC}" "${RICE_WALLPAPER_DST}"
 # ---------------------------------------------------------------------------
 info "Generating palette assets (lock screen + preview)"
 # ---------------------------------------------------------------------------
+LOCK_ASSET="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 if python3 -c 'import PIL' >/dev/null 2>&1; then
     python3 "${RICE_DIR}/scripts/make-lock.py"
     python3 "${RICE_DIR}/scripts/make-preview.py"
+    [[ -f "${LOCK_ASSET}" ]] || die "lock image generation failed: ${LOCK_ASSET} missing"
 else
-    warn "python3 PIL not available — skipping asset generation"
+    warn "python3 PIL not available — install dev-python/pillow or the lock card will be missing"
 fi
 
 # ---------------------------------------------------------------------------
