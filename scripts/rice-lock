@@ -19,7 +19,8 @@ pie_lock() {
 
     # A fat butter ring, blush typing arcs, dark slab separators: the lock
     # screen's round indicator now echoes the pmenu pie slices. It is always
-    # visible, so wrong-password text and the EN/RU code stay readable inside.
+    # visible, so WRONG/CHECK text stays readable inside; the EN/RU hint lives
+    # on the card instead of crowding the ring.
     exec "$PIE_LOCKER" -n -e -f "$@" \
         --indicator \
         --radius=104 \
@@ -40,12 +41,8 @@ pie_lock() {
         --wrong-size=24 \
         --verif-text=CHECK \
         --wrong-text=WRONG \
-        --keylayout=2 \
-        --layout-color=474333FF \
-        --layout-size=28 \
         --no-modkey-text \
-        --ind-pos='w/2:h/2+330' \
-        --layout-pos='ix:iy+48'
+        --ind-pos='w/2:h/2+330'
 }
 
 if [ -x "$PIE_LOCKER" ]; then
@@ -55,9 +52,9 @@ fi
 # Fallback: vanilla Gentoo i3lock keeps its circular unlock feedback.
 if command -v i3lock >/dev/null 2>&1; then
     if [ -f "$LOCK_IMAGE" ]; then
-        exec i3lock -n -e -f -k -i "$LOCK_IMAGE"
+        exec i3lock -n -e -f -i "$LOCK_IMAGE"
     fi
-    exec i3lock -n -e -f -k -c 474333
+    exec i3lock -n -e -f -c 474333
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.

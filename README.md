@@ -46,7 +46,8 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
   a blurred wallpaper card showing the current time/date and a hard ink outline,
   plus a fat butter ring below it. The ring echoes the pmenu pie slices: blush
-  typing arcs, dark slab separators, an EN/RU code, and clear WRONG/CHECK text.
+  typing arcs, dark slab separators, and clear WRONG/CHECK text; the EN/RU hint
+  stays on the card.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
 * **pmenu menu** — `Mod+d` opens a pie menu with butter slices, a blush active slice,
   no ink outline, Retrosmart icons, the hard dark slab ring, and no fullscreen Electron
