@@ -70,7 +70,7 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
 Run the installer from this directory:
 
 ```bash
-cd ~/gentoo-i3-kawaii-rice
+cd ~/hkpie
 ./install.sh
 ```
 
@@ -84,7 +84,8 @@ The installer:
    `x11-apps/xrandr`, `x11-apps/xrdb`, `gnome-base/librsvg`, `dev-python/pygobject`,
   plus pmenu build deps.
 2. Generates the lock image with PIL and renders pmenu PNGs from Retrosmart SVGs.
-3. Copies `~/Pictures/hkpiewallpaper.png` to
+3. Copies the bundled `assets/hkpiewallpaper.png` (or your existing
+   `~/Pictures/hkpiewallpaper.png` if present) to
    `~/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png`.
 4. Installs the configs, scripts, Retrosmart globally (GTK/GSettings/Xfconf/dunst/Nemo),
    pmenu X resources and verified Bibata cursor, then builds pmenu locally into
@@ -122,7 +123,7 @@ PORTAGE_SETUP=1 ./install.sh
 ...or do the root steps yourself:
 
 ```bash
-cd ~/gentoo-i3-kawaii-rice
+cd ~/hkpie
 sudo install -d /etc/portage/binrepos.conf
 sudo cp portage/gentoo.conf /etc/portage/binrepos.conf/99-hkpie-gentoo.conf
 
@@ -224,10 +225,12 @@ rendered from the same Retrosmart SVGs that GTK/Nemo/dunst use.
 ## 🗂 File tree
 
 ```
-gentoo-i3-kawaii-rice/
+hkpie/
 ├── README.md
 ├── palette.env                     # shared color values
 ├── install.sh                      # backs up, installs with emerge -g
+├── assets/
+│   └── hkpiewallpaper.png          # shipped wallpaper, no generation needed
 ├── portage/
 │   ├── gentoo.conf                 # official amd64 binhost template
 │   ├── make.conf.snippet           # getbinpkg defaults

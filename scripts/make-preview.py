@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the square preview.jpg for the hkpie-brutal Kando theme. ✿
+"""Generate the square hkpie preview image. ✿
 
 Purely programmatic: no external artwork, just the wallpaper palette.
 Usage: python3 make-preview.py [output/path/preview.jpg]
@@ -47,8 +47,7 @@ def square_chip(draw: ImageDraw.ImageDraw, cx: int, cy: int, radius: int,
 
 def main() -> None:
     default_out = (
-        pathlib.Path(__file__).resolve().parent.parent
-        / "config/kando/menu-themes/hkpie-brutal/preview.jpg"
+        pathlib.Path.home() / ".local/share/kawaii-rice/preview.jpg"
     )
     out = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else default_out
 

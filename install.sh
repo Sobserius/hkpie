@@ -7,6 +7,9 @@ RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=palette.env
 source "${RICE_DIR}/palette.env"
 
+# The wallpaper ships in the repo so a fresh clone never depends on ~/Pictures.
+RICE_WALLPAPER_BUNDLED="${RICE_DIR}/assets/${RICE_WALLPAPER_NAME}"
+
 BACKUP_ROOT="${HOME}/.config/kawaii-rice-backups"
 BACKUP_DIR="${BACKUP_ROOT}/$(date +%Y%m%d-%H%M%S)"
 EMERGE_CMD="${EMERGE:-sudo emerge -g --ask}"
@@ -118,12 +121,13 @@ fi
 # ---------------------------------------------------------------------------
 info "Installing wallpaper"
 # ---------------------------------------------------------------------------
-mkdir -p "$(dirname "${RICE_WALLPAPER_DST}")"
-if [[ -f "${RICE_WALLPAPER_SRC}" ]]; then
-    install_file "${RICE_WALLPAPER_SRC}" "${RICE_WALLPAPER_DST}"
-else
-    warn "${RICE_WALLPAPER_SRC} not found — copy it there and run rice-wallpaper"
+WALLPAPER_SRC="${RICE_WALLPAPER_SRC}"
+if [[ ! -f "${WALLPAPER_SRC}" && -f "${RICE_WALLPAPER_BUNDLED}" ]]; then
+    WALLPAPER_SRC="${RICE_WALLPAPER_BUNDLED}"
+    info "using bundled wallpaper from ${WALLPAPER_SRC}"
 fi
+[[ -f "${WALLPAPER_SRC}" ]] || die "no wallpaper found at ${RICE_WALLPAPER_SRC} or ${RICE_WALLPAPER_BUNDLED}"
+install_file "${WALLPAPER_SRC}" "${RICE_WALLPAPER_DST}"
 
 # ---------------------------------------------------------------------------
 info "Generating palette assets (lock screen + preview)"
