@@ -79,7 +79,8 @@ The installer:
 1. Installs packages with **`emerge -g --ask`** (prefer binary packages):
    `x11-wm/i3`, `x11-misc/picom`, `x11-misc/dunst`,
    `x11-misc/i3lock`, `media-gfx/feh`, `media-gfx/scrot`,
-   `media-fonts/jetbrains-mono`, `media-fonts/fira-sans`, `x11-terms/kitty`,
+   `media-fonts/jetbrains-mono`, `media-fonts/fira-sans`, `media-fonts/noto-emoji`,
+   `x11-terms/kitty`,
    `media-sound/pavucontrol`, `x11-misc/pcmanfm`, `app-arch/unzip`, `sys-apps/dbus`,
    `x11-apps/xrandr`, `x11-apps/xrdb`, `gnome-base/librsvg`, `dev-python/pygobject`,
   plus pmenu build deps.

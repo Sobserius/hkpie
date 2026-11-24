@@ -65,6 +65,7 @@ PACKAGES=(
     media-gfx/scrot
     media-fonts/jetbrains-mono
     media-fonts/fira-sans
+    media-fonts/noto-emoji
     media-libs/freetype
     media-libs/fontconfig
     x11-terms/kitty
