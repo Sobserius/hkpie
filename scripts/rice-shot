@@ -6,6 +6,10 @@ mode="${1:-full}"
 mkdir -p "${HOME}/Pictures"
 stamp="$(date +%Y-%m-%d-%H%M%S)"
 
+# Give the pie menu time to close before capturing; override with RICE_SHOT_DELAY.
+delay="${RICE_SHOT_DELAY:-1.5}"
+sleep "$delay" 2>/dev/null || sleep 1
+
 case "$mode" in
     full|screen|fullscreen)
         label="Fullscreen"

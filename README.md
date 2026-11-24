@@ -228,7 +228,8 @@ Slices:
 * **Terminal** — Kitty
 * **Files** — Nemo with pcmanfm/Thunar fallback
 * **Screenshot** — its own pie slice with the Retrosmart camera/screenshot icon;
-  its entries are plain text: Fullscreen, Active window, Region
+  its entries are plain text: Fullscreen, Active window, Region. Each waits
+  1.5s for the pie menu to close before capturing (`RICE_SHOT_DELAY` overrides).
 * **Rice** — reload, edit palette, compositor reload, lock, suspend
 
 pmenu treats any output starting with `$` as a dynamic-submenu command, so the
