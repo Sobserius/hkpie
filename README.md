@@ -49,9 +49,9 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   typing arcs, dark slab separators, and clear WRONG/CHECK text; the EN/RU hint
   stays on the card.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
-* **pmenu menu** — `Mod+d` opens a pie menu with butter slices, a blush active slice,
-  no ink outline, Retrosmart icons, the hard dark slab ring, and no fullscreen Electron
-  overlay.
+* **pmenu menu** — `Mod+d` opens a pie menu modelled on the lock ring: a paper
+  centre, butter slices, a blush active arc, deep ink separators and rim, plus the
+  hard dark slab shadow. No fullscreen Electron overlay.
 * **Custom apps** — `kitty` as the default terminal (`$TERMINAL`, PCManFM/libfm,
   and pmenu terminal apps), `pavucontrol`, PCManFM/Thunar,
   fullscreen/window/region screenshots copied to the clipboard, notification
@@ -218,15 +218,15 @@ Slices:
 * **Files** — Nemo with pcmanfm/Thunar fallback
 * **Screenshot** — its own pie slice with the Retrosmart camera/screenshot icon;
   its entries are plain text: Fullscreen, Active window, Region
-* **Rice** — reload, wallpaper cycle, compositor reload, lock, suspend
+* **Rice** — reload, compositor reload, lock, suspend
 
 pmenu treats any output starting with `$` as a dynamic-submenu command, so the
 action commands are wrapped in `sh -c '...'`; that is why Screenshot works now.
 
-The look comes from X resources at `~/.config/pmenu/Xresources` (butter fills,
-blush active slice, no ink outline, no bevel), loaded automatically by i3.
-The dark ring around the whole pie is picom's rock-hard offset slab shadow,
-so pmenu keeps the same hard backdrop as the app windows.
+The look comes from X resources at `~/.config/pmenu/Xresources` plus a small
+patched build of pmenu (paper centre, butter ring, blush active arc, deep ink
+line/separators), loaded automatically by i3. The dark slab around the whole
+pie is picom's rock-hard offset shadow, matching the lock ring and app windows.
 Icons come from `ICONPATH` pointing at `~/.local/share/icons/retrosmart-pmenu/48x48/apps`,
 rendered from the same Retrosmart SVGs that GTK/Nemo/dunst use.
 
@@ -255,6 +255,8 @@ hkpie/
 │   ├── gtk-4.0/settings.ini
 │   ├── fontconfig/99-kawaii-rice.conf
 │   └── xinitrc
+├── patches/
+│   └── pmenu-hkpie-lock-ring.patch  # pmenu centre/ring/segments styling
 ├── scripts/
 │   ├── install-portage.sh          # optional root helper
 │   ├── make-lock.py                # generates the lock-screen image

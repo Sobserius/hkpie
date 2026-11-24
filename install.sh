@@ -319,9 +319,14 @@ info "Installing pmenu (replaces Kando)"
 install_pmenu() {
     local src="${HOME}/.local/src/pmenu"
     local bin="${HOME}/.local/bin/pmenu"
+    local marker="${src}/.hkpie-lock-ring"
+    local patch="${RICE_DIR}/patches/pmenu-hkpie-lock-ring.patch"
 
-    if [[ -x "${bin}" ]]; then
-        ok "pmenu already installed: ${bin}"
+    [[ -f "${patch}" ]] || die "missing pmenu patch: ${patch}"
+
+    if [[ -x "${bin}" ]] && [[ -f "${marker}" ]] && \
+       [[ "$(git -C "${src}" rev-parse HEAD 2>/dev/null || true)" == "${PMENU_COMMIT}" ]]; then
+        ok "pmenu already installed with the hkpie lock-ring patch"
         return 0
     fi
 
@@ -336,8 +341,10 @@ install_pmenu() {
         git clone --quiet https://github.com/phillbush/pmenu.git "${src}"
     fi
 
-    info "building pmenu at ${PMENU_COMMIT}"
-    git -C "${src}" checkout --quiet "${PMENU_COMMIT}"
+    info "building pmenu at ${PMENU_COMMIT} with the hkpie lock-ring patch"
+    git -C "${src}" reset --hard "${PMENU_COMMIT}" >/dev/null
+    git -C "${src}" apply "${patch}"
+    touch "${marker}"
     make -C "${src}" clean >/dev/null 2>&1 || true
     make -C "${src}" PREFIX="${HOME}/.local" >/dev/null
     make -C "${src}" PREFIX="${HOME}/.local" install >/dev/null

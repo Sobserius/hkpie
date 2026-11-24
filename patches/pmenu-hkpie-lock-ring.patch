@@ -1,0 +1,133 @@
+diff --git a/pmenu.c b/pmenu.c
+index bdc1c8a..82e2634 100644
+--- a/pmenu.c
++++ b/pmenu.c
+@@ -48,6 +48,7 @@
+ #define RESOURCES                                                       \
+ 	X(_SELECT_BG,   "Selbackground",        "selbackground")        \
+ 	X(_SELECT_FG,   "Selforeground",        "selforeground")        \
++	X(CENTER_CLR,   "CenterColor",          "centerColor")          \
+ 	X(BORDER_CLR,   "BorderColor",          "borderColor")          \
+ 	X(BORDER_WID,   "BorderWidth",          "borderWidth")          \
+ 	X(DIAMETER,     "DiameterWidth",        "diameterWidth")        \
+@@ -71,12 +72,14 @@
+ #define DEF_COLOR_BORDER (XRenderColor){ .red = 0x3100, .green = 0x3100, .blue = 0x3100, .alpha = 0xFFFF }
+ 
+ #define SEPARATOR_BEG 0.14
+-#define SEPARATOR_END 0.37
++#define RING_INNER 0.86
++#define RING_LINE 0.018
+ 
+ enum {
+ 	SCHEME_NORMAL,
+ 	SCHEME_SELECT,
+ 	SCHEME_BORDER,
++	SCHEME_CENTER,
+ 	SCHEME_LAST,
+ };
+ 
+@@ -1124,14 +1127,14 @@ drawseparator(Picture picture, struct Menu *menu, struct Slice *slice)
+ 	double a;
+ 
+ 	a = -((M_PI + 2 * M_PI * slice->slicen) / menu->nslices);
+-	p[0].x = pie.border + pie.radius + pie.separatorbeg * cos(a - pie.innerangle);
+-	p[0].y = pie.border + pie.radius + pie.separatorbeg * sin(a - pie.innerangle);
+-	p[1].x = pie.border + pie.radius + pie.separatorbeg * cos(a + pie.innerangle);
+-	p[1].y = pie.border + pie.radius + pie.separatorbeg * sin(a + pie.innerangle);
+-	p[2].x = pie.border + pie.radius + pie.separatorend * cos(a + pie.outerangle);
+-	p[2].y = pie.border + pie.radius + pie.separatorend * sin(a + pie.outerangle);
+-	p[3].x = pie.border + pie.radius + pie.separatorend * cos(a - pie.outerangle);
+-	p[3].y = pie.border + pie.radius + pie.separatorend * sin(a - pie.outerangle);
++	p[0].x = pie.border + pie.radius + (pie.separatorend + pie.radius * RING_LINE) * cos(a - pie.outerangle);
++	p[0].y = pie.border + pie.radius + (pie.separatorend + pie.radius * RING_LINE) * sin(a - pie.outerangle);
++	p[1].x = pie.border + pie.radius + (pie.separatorend + pie.radius * RING_LINE) * cos(a + pie.outerangle);
++	p[1].y = pie.border + pie.radius + (pie.separatorend + pie.radius * RING_LINE) * sin(a + pie.outerangle);
++	p[2].x = pie.border + pie.radius + pie.radius * cos(a + pie.outerangle);
++	p[2].y = pie.border + pie.radius + pie.radius * sin(a + pie.outerangle);
++	p[3].x = pie.border + pie.radius + pie.radius * cos(a - pie.outerangle);
++	p[3].y = pie.border + pie.radius + pie.radius * sin(a - pie.outerangle);
+ 	XRenderCompositeDoublePoly(
+ 		pie.display,
+ 		PictOpOver,
+@@ -1175,6 +1178,7 @@ drawmenu(struct Menu *menu, struct Slice *selected)
+ 	Picture picture;
+ 	Picture source;
+ 	Picture fg;
++	double line;
+ 
+ 	if (selected) {
+ 		pixmap = selected->pixmap;
+@@ -1200,21 +1204,40 @@ drawmenu(struct Menu *menu, struct Slice *selected)
+ 		pie.fulldiameter,
+ 		pie.fulldiameter
+ 	);
++	line = pie.radius * RING_LINE;
++
++	/* hkpie: paper centre, butter ring, hard ink line — like the lock ring. */
+ 	drawslice(
+ 		picture,
+-		pie.colors[SCHEME_NORMAL][COLOR_BG].pict,
++		pie.colors[SCHEME_CENTER][COLOR_BG].pict,
+ 		1,
+ 		0,
+ 		0,
+ 		pie.radius
+ 	);
++	drawslice(
++		picture,
++		pie.colors[SCHEME_NORMAL][COLOR_BG].pict,
++		1,
++		0,
++		pie.separatorend,
++		pie.radius
++	);
++	drawslice(
++		picture,
++		pie.colors[SCHEME_NORMAL][COLOR_FG].pict,
++		1,
++		0,
++		pie.separatorend - line,
++		pie.separatorend + line
++	);
+ 	if (selected != NULL) {
+ 		drawslice(
+ 			picture,
+ 			pie.colors[SCHEME_SELECT][COLOR_BG].pict,
+ 			menu->nslices,
+ 			selected->slicen,
+-			pie.separatorbeg,
++			pie.separatorend + line,
+ 			pie.radius
+ 		);
+ 	}
+@@ -1757,6 +1780,9 @@ loadresources(const char *str)
+ 		case SHADOW_TOP:
+ 			setcolor(SCHEME_BORDER, COLOR_TOP, value);
+ 			break;
++		case CENTER_CLR:
++			setcolor(SCHEME_CENTER, COLOR_BG, value);
++			break;
+ 		case SHADOW_WID:
+ 		case BORDER_WID:
+ 			l = strtol(value, &endp, 10);
+@@ -1951,6 +1977,8 @@ inittheme(void)
+ 	pie.colors[SCHEME_SELECT][COLOR_FG].chans = DEF_COLOR_SELFG;
+ 	pie.colors[SCHEME_BORDER][COLOR_TOP].chans = DEF_COLOR_BORDER;
+ 	pie.colors[SCHEME_BORDER][COLOR_BOT].chans = DEF_COLOR_BORDER;
++	pie.colors[SCHEME_CENTER][COLOR_BG].chans =
++		(XRenderColor){ .red = 0xf700, .green = 0xf700, .blue = 0xf700, .alpha = 0xffff };
+ 	for (i = 0; i < SCHEME_LAST; i++) {
+ 		for (j = 0; j < COLOR_LAST; j++) {
+ 			pie.colors[i][j].pix = XCreatePixmap(
+@@ -2010,9 +2038,9 @@ initpie(void)
+ 
+ 	/* set the separator beginning and end */
+ 	pie.separatorbeg = pie.radius * SEPARATOR_BEG;
+-	pie.separatorend = pie.radius * SEPARATOR_END;
++	pie.separatorend = pie.radius * RING_INNER;
+ 	pie.innerangle = atan(1.0 / (2.0 * pie.separatorbeg));
+-	pie.outerangle = atan(1.0 / (2.0 * pie.separatorend));
++	pie.outerangle = atan(1.0 / (2.0 * pie.radius));
+ 
+ 	/* create bitmap mask (depth = 1) */
+ 	pie.clip = XCreatePixmap(

@@ -7,4 +7,4 @@ ICON_ROOT="${HOME}/.local/share/icons/retrosmart-pmenu"
 export ICONPATH="${ICON_ROOT}/48x48/apps"
 
 python3 "${HOME}/.local/bin/rice-menu-spec.py" | \
-    "${HOME}/.local/bin/pmenu" -e -N PMenu -d 340
+    "${HOME}/.local/bin/pmenu" -e -N PMenu -d 260

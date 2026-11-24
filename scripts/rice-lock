@@ -24,7 +24,7 @@ pie_lock() {
     exec "$PIE_LOCKER" -n -e -f "$@" \
         --indicator \
         --radius=104 \
-        --ring-width=14 \
+        --ring-width=20 \
         --inside-color=F7F7F7FF \
         --ring-color=F6F098FF \
         --insidever-color=EAE7AAFF \

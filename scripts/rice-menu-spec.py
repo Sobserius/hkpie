@@ -255,7 +255,6 @@ def main() -> int:
     print("\tRegion\tsh -c '$HOME/.local/bin/rice-shot region'")
     print("IMG:rice.png\tRice")
     print("\tIMG:reload.png\tReload rice\tsh -c '$HOME/.local/bin/rice-reload'")
-    print("\tIMG:wallpaper.png\tNext wallpaper\tsh -c '$HOME/.local/bin/rice-wallpaper next'")
     print("\tIMG:picom.png\tReload compositor\tsh -c 'pkill -x picom; picom --config $HOME/.config/picom/picom.conf &'")
     print("\tIMG:lock.png\tLock\tsh -c '$HOME/.local/bin/rice-lock'")
     print("\tIMG:sleep.png\tSuspend\tsh -c '$HOME/.local/bin/rice-lock && systemctl suspend'")
