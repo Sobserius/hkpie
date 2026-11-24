@@ -90,3 +90,25 @@ progressbar progress {
     border: 2px solid @outline;
     border-radius: 0;
 }
+
+/* The file chooser's format combo nests a frame in a .linked in a combobox.
+   Collapse those inner widgets so it keeps one brutal outline, not three. */
+combobox > .linked,
+combobox frame,
+combobox button,
+combobox .linked button,
+.filechooser combobox .linked,
+.filechooser combobox frame {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    background-color: @surface;
+}
+
+combobox,
+.filechooser combobox {
+    border: 3px solid @outline;
+    border-radius: 0;
+    box-shadow: 3px 3px 0 @outline;
+    padding: 2px 6px;
+}

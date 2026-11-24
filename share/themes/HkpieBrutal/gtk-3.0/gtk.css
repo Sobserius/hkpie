@@ -204,3 +204,25 @@ placeholder,
     color: @muted-dark;
     font-weight: 700;
 }
+
+/* A combo is a frame inside a .linked inside a combobox. Without this, the
+   file chooser's format filter stacks three borders and three shadows. */
+combobox > .linked,
+combobox frame,
+combobox button,
+combobox .linked button,
+.filechooser combobox .linked,
+.filechooser combobox frame {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    background-color: @surface;
+}
+
+combobox,
+.filechooser combobox {
+    border: 3px solid @outline;
+    border-radius: 0;
+    box-shadow: 3px 3px 0 @outline;
+    padding: 2px 6px;
+}

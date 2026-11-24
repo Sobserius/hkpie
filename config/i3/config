@@ -174,7 +174,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+s exec --no-startup-id sh -c '$HOME/.local/bin/rice-shot full'
-bindsym $mod+Shift+o exec --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
+bindsym $mod+Shift+o exec --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper pick'
 bindsym $mod+Shift+p exec --no-startup-id sh -c '$HOME/.local/bin/rice-reload'
 bindsym $mod+Shift+t exec --no-startup-id sh -c '$HOME/.local/bin/rice-theme'
 

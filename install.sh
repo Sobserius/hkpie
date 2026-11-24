@@ -223,7 +223,7 @@ ok "PCManFM set to open terminals in kitty"
 info "Installing helper scripts"
 # ---------------------------------------------------------------------------
 mkdir -p "${HOME}/.local/bin"
-for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
+for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-pick-wallpaper.py rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
     install_file "${RICE_DIR}/scripts/${script}" "${HOME}/.local/bin/${script}"
     chmod +x "${HOME}/.local/bin/${script}"
 done

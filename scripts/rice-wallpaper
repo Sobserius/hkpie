@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
-# Set (or cycle) the hkpie wallpaper. Uses feh (emerged with -g). ✿
+# Set, pick, or cycle the hkpie wallpaper. Uses feh (emerged with -g). ✿
 set -eu
+
+here="$(dirname "$0")"
 
 # shellcheck source=../palette.env
 CONFIG="${HOME}/.config/kawaii-rice/palette.env"
@@ -9,39 +11,122 @@ if [ -f "$CONFIG" ]; then
     . "$CONFIG"
 fi
 
-WALLPAPER="${RICE_WALLPAPER:-${HOME}/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png}"
+BACKGROUND_DIR="${HOME}/.local/share/backgrounds/kawaii-rice"
+DEFAULT_WALLPAPER="${RICE_WALLPAPER:-${BACKGROUND_DIR}/hkpiewallpaper.png}"
+SELECTION="${HOME}/.config/hkpie/wallpaper"
 
-# "rice-wallpaper next" cycles through images in the backgrounds folder.
-if [ "${1:-}" = "next" ]; then
-    dir=$(dirname "$WALLPAPER")
-    current=$(readlink -f "$WALLPAPER" 2>/dev/null || printf '%s' "$WALLPAPER")
-    next=""
-    found=0
-    first=""
-    for candidate in "$dir"/*.png "$dir"/*.jpg "$dir"/*.jpeg; do
-        [ -f "$candidate" ] || continue
-        [ -n "$first" ] || first=$candidate
-        if [ "$found" -eq 1 ]; then
-            next=$candidate
-            break
+WALLPAPER="$DEFAULT_WALLPAPER"
+if [ -f "$SELECTION" ]; then
+    selected=""
+    IFS= read -r selected < "$SELECTION" || true
+    if [ -n "$selected" ] && [ -f "$selected" ]; then
+        WALLPAPER="$selected"
+    fi
+fi
+
+apply() {
+    if command -v feh >/dev/null 2>&1; then
+        feh --bg-fill "$1"
+        return 0
+    fi
+    fill="$(python3 "$here/palette.py" --get background 2>/dev/null || true)"
+    fill="${fill#\#}"
+    [ -n "$fill" ] || fill=EAE7AA
+    if command -v xsetroot >/dev/null 2>&1; then
+        xsetroot -solid "#$fill"
+    fi
+    printf 'rice-wallpaper: feh not found, set solid background only\n' >&2
+}
+
+set_wallpaper() {
+    src="$1"
+    [ -f "$src" ] || {
+        printf 'rice-wallpaper: missing %s\n' "$src" >&2
+        return 1
+    }
+
+    mkdir -p "$BACKGROUND_DIR" "$(dirname "$SELECTION")"
+    name="${RICE_WALLPAPER_NAME:-hkpiewallpaper.png}"
+    default_dest="${BACKGROUND_DIR}/${name}"
+
+    src_real="$(readlink -f "$src" 2>/dev/null || printf '%s' "$src")"
+    default_real="$(readlink -f "$default_dest" 2>/dev/null || printf '%s' "$default_dest")"
+
+    if [ "$src_real" = "$default_real" ]; then
+        dest="$default_dest"
+    else
+        base="$(basename -- "$src")"
+        safe="$(printf '%s' "$base" | tr -cd '[:alnum:]._-')"
+        [ -n "$safe" ] || safe="wallpaper.png"
+        dest="${BACKGROUND_DIR}/picked-$(date +%Y%m%d-%H%M%S)-${safe}"
+        cp -f -- "$src" "$dest"
+    fi
+
+    printf '%s\n' "$dest" > "$SELECTION"
+    WALLPAPER="$dest"
+    apply "$dest"
+}
+
+pick_wallpaper() {
+    # Let the pie menu close before the chooser appears.
+    sleep 1
+
+    picker="$here/rice-pick-wallpaper.py"
+    [ -f "$picker" ] || picker="${HOME}/.local/bin/rice-pick-wallpaper.py"
+
+    chosen=""
+    if ! chosen="$(python3 "$picker")"; then
+        if command -v notify-send >/dev/null 2>&1; then
+            notify-send -i dialog-error 'hkpie' 'could not open the wallpaper chooser' >/dev/null 2>&1 || true
         fi
-        if [ "$(readlink -f "$candidate" 2>/dev/null || printf '%s' "$candidate")" = "$current" ]; then
-            found=1
+        return 1
+    fi
+    # Cancel just closes the chooser; keep the current wallpaper.
+    [ -n "$chosen" ] || return 0
+    set_wallpaper "$chosen"
+}
+
+case "${1:-}" in
+    pick|choose|chooser|filechooser)
+        pick_wallpaper
+        ;;
+    set)
+        [ $# -ge 2 ] || {
+            printf 'usage: rice-wallpaper set /path/to/image\n' >&2
+            exit 2
+        }
+        set_wallpaper "$2"
+        ;;
+    next|cycle)
+        current="$(readlink -f "$WALLPAPER" 2>/dev/null || printf '%s' "$WALLPAPER")"
+        next=""
+        first=""
+        found=0
+        for candidate in "$BACKGROUND_DIR"/*.png "$BACKGROUND_DIR"/*.jpg "$BACKGROUND_DIR"/*.jpeg "$BACKGROUND_DIR"/*.webp "$BACKGROUND_DIR"/*.gif "$BACKGROUND_DIR"/*.bmp; do
+            [ -f "$candidate" ] || continue
+            [ "$(basename -- "$candidate")" = "hkpie-lock.png" ] && continue
+            [ -n "$first" ] || first="$candidate"
+            if [ "$found" -eq 1 ]; then
+                next="$candidate"
+                break
+            fi
+            candidate_real="$(readlink -f "$candidate" 2>/dev/null || printf '%s' "$candidate")"
+            if [ "$candidate_real" = "$current" ]; then
+                found=1
+            fi
+        done
+        [ -n "$next" ] || next="$first"
+        [ -z "$next" ] || set_wallpaper "$next"
+        ;;
+    "")
+        if [ ! -f "$WALLPAPER" ]; then
+            printf 'rice-wallpaper: missing %s\n' "$WALLPAPER" >&2
+            exit 1
         fi
-    done
-    [ -n "$next" ] || next=$first
-    [ -z "$next" ] || WALLPAPER=$next
-fi
-
-if [ ! -f "$WALLPAPER" ]; then
-    printf 'rice-wallpaper: missing %s\n' "$WALLPAPER" >&2
-    exit 1
-fi
-
-if command -v feh >/dev/null 2>&1; then
-    exec feh --bg-fill "$WALLPAPER"
-fi
-
-# Fallback: at least keep the pastel backdrop
-command -v xsetroot >/dev/null 2>&1 && xsetroot -solid '#EAE7AA'
-printf 'rice-wallpaper: feh not found, set solid cream background only\n' >&2
+        apply "$WALLPAPER"
+        ;;
+    *)
+        printf 'usage: rice-wallpaper [pick|set PATH|next]\n' >&2
+        exit 2
+        ;;
+esac

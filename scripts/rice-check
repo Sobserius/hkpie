@@ -33,6 +33,8 @@ for f in \
     "$HOME/.local/bin/rice-theme.py" \
     "$HOME/.local/bin/rice-theme" \
     "$HOME/.local/bin/rice-theme-daemon" \
+    "$HOME/.local/bin/rice-wallpaper" \
+    "$HOME/.local/bin/rice-pick-wallpaper.py" \
     "$HOME/.local/bin/rice-shot" \
     "$HOME/.local/bin/rice-lock" \
     "$HOME/.local/bin/rice-menu" \

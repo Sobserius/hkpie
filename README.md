@@ -204,7 +204,7 @@ requested.
 | `Mod + Space` | Focus tiling / floating toggle |
 | `Mod + a` | Focus parent container |
 | `Mod + Shift + s` | Fullscreen screenshot to `~/Pictures/` + clipboard |
-| `Mod + Shift + o` | Cycle wallpaper |
+| `Mod + Shift + o` | Open the wallpaper file chooser |
 | `Mod + Shift + p` | Reload the whole rice |
 | `Mod + Shift + c` | Reload i3 |
 | `Mod + Shift + r` | Restart i3 in place |
@@ -230,7 +230,15 @@ Slices:
 * **Screenshot** — its own pie slice with the Retrosmart camera/screenshot icon;
   its entries are plain text: Fullscreen, Active window, Region. Each waits
   1.5s for the pie menu to close before capturing (`RICE_SHOT_DELAY` overrides).
-* **Rice** — reload, edit palette, compositor reload, lock, suspend
+* **Rice** — wallpaper (file chooser), reload, edit palette, compositor reload,
+  lock, suspend
+
+The wallpaper picker copies your image into
+`~/.local/share/backgrounds/kawaii-rice/` and remembers it in
+`~/.config/hkpie/wallpaper`, so it survives i3 restarts and reinstalls. Use
+`rice-wallpaper next` (or an image from the same folder) if you want to cycle
+without the chooser. The chooser's format filter keeps one hard outline — the
+stacked frame/linked/combo borders are collapsed.
 
 pmenu treats any output starting with `$` as a dynamic-submenu command, so the
 action commands are wrapped in `sh -c '...'`; that is why Screenshot works now.
@@ -279,6 +287,7 @@ hkpie/
 │   ├── make-lock.py                # generates the lock-screen image
 │   ├── make-preview.py             # regenerates the pmenu/GTK preview
 │   ├── rice-wallpaper
+│   ├── rice-pick-wallpaper.py      # GTK file chooser for wallpapers
 │   ├── rice-reload
 │   ├── rice-check
 │   ├── rice-shot
