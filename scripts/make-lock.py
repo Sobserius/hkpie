@@ -10,15 +10,18 @@ from datetime import datetime
 
 from PIL import Image, ImageDraw, ImageFont
 
+from palette import load, rgba
+
 HOME = pathlib.Path.home()
 OUT = HOME / ".local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 
-INK = (71, 67, 51, 255)
-DEEP = (46, 43, 33, 255)
-PAPER = (247, 247, 247, 255)
-BUTTER = (246, 240, 152, 255)
-BLUSH = (240, 160, 144, 255)
-CREAM = (234, 231, 170, 255)
+COLORS = load()
+INK = rgba("ink", COLORS)
+DEEP = rgba("deep", COLORS)
+PAPER = rgba("paper", COLORS)
+BUTTER = rgba("butter", COLORS)
+BLUSH = rgba("blush", COLORS)
+CREAM = rgba("cream", COLORS)
 
 DAYS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 MONTHS = ("JAN", "FEB", "MAR", "APR", "MAY", "JUN",

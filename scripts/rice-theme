@@ -1,0 +1,13 @@
+#!/bin/sh
+# Open the editable hkpie palette in nano (inside kitty). ✿
+set -eu
+
+here="$(dirname "$0")"
+conf="${HOME}/.config/hkpie/palette.conf"
+
+python3 "$here/palette.py" --init
+
+if command -v kitty >/dev/null 2>&1; then
+    exec kitty -e nano "$conf"
+fi
+exec "${EDITOR:-nano}" "$conf"

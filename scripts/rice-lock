@@ -4,6 +4,9 @@ set -u
 
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
 PIE_LOCKER="${HOME}/.local/bin/hkpie-i3lock"
+FILLER="$(python3 "$(dirname "$0")/palette.py" --get cream 2>/dev/null || true)"
+FILLER="${FILLER#\#}"
+[ -n "$FILLER" ] || FILLER=EAE7AA
 
 # Regenerate on every lock so the clock and date are current.
 if command -v python3 >/dev/null 2>&1; then
@@ -14,7 +17,7 @@ pie_lock() {
     if [ -f "$LOCK_IMAGE" ]; then
         set -- -i "$LOCK_IMAGE"
     else
-        set -- -c EAE7AA
+        set -- -c "$FILLER"
     fi
 
     # A fat butter ring, blush typing arcs, dark slab separators: the lock
@@ -54,7 +57,7 @@ if command -v i3lock >/dev/null 2>&1; then
     if [ -f "$LOCK_IMAGE" ]; then
         exec i3lock -n -e -f -i "$LOCK_IMAGE"
     fi
-    exec i3lock -n -e -f -c EAE7AA
+    exec i3lock -n -e -f -c "$FILLER"
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.

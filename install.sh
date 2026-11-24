@@ -73,6 +73,7 @@ PACKAGES=(
     media-sound/pavucontrol
     x11-misc/pcmanfm
     app-arch/unzip
+    app-editors/nano
     sys-apps/dbus
     gnome-extra/polkit-gnome
     x11-apps/xrandr
@@ -222,10 +223,17 @@ ok "PCManFM set to open terminals in kitty"
 info "Installing helper scripts"
 # ---------------------------------------------------------------------------
 mkdir -p "${HOME}/.local/bin"
-for script in rice-wallpaper rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-pmenu-icons.sh; do
+for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
     install_file "${RICE_DIR}/scripts/${script}" "${HOME}/.local/bin/${script}"
     chmod +x "${HOME}/.local/bin/${script}"
 done
+
+# ---------------------------------------------------------------------------
+info "Wiring the editable palette to GTK, pmenu and lock assets"
+# ---------------------------------------------------------------------------
+python3 "${HOME}/.local/bin/palette.py" --init
+python3 "${HOME}/.local/bin/rice-theme.py"
+ok "theme generated from ~/.config/hkpie/palette.conf"
 
 # ---------------------------------------------------------------------------
 info "Removing Polybar (no status bar in this rice)"
@@ -420,6 +428,7 @@ cat <<EOF
   Log out and select i3, or press Mod+Shift+c to reload.
   • Mod+d opens the pmenu pie menu with Retrosmart icons (no Kando overlay).
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
+  • Mod+Shift+t opens the editable palette in nano; edits restyle GTK/pmenu live.
   • Mod+Shift+x locks with a live time/date card and a pie-style round indicator.
   • Colors: cream #EAE7AA · butter #F6F098 · blush #F0A090 · ink #474333
   • Backups: ${BACKUP_DIR}

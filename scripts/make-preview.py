@@ -12,12 +12,15 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-CREAM = (234, 231, 170)   # #EAE7AA
-BUTTER = (246, 240, 152)  # #F6F098
-BLUSH = (240, 160, 144)   # #F0A090
-PAPER = (247, 247, 247)   # #F7F7F7
-TAN = (195, 175, 141)     # #C3AF8D
-INK = (71, 67, 51)        # #474333
+from palette import load, rgb
+
+COLORS = load()
+CREAM = rgb("cream", COLORS)
+BUTTER = rgb("butter", COLORS)
+BLUSH = rgb("blush", COLORS)
+PAPER = rgb("paper", COLORS)
+TAN = rgb("tan", COLORS)
+INK = rgb("ink", COLORS)
 
 SIZE = 700
 CENTER = SIZE // 2

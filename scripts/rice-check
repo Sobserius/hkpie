@@ -28,6 +28,11 @@ for f in \
     "$HOME/.config/gtk-4.0/settings.ini" \
     "$HOME/.config/pmenu/Xresources" \
     "$HOME/.config/fontconfig/conf.d/99-kawaii-rice.conf" \
+    "$HOME/.config/hkpie/palette.conf" \
+    "$HOME/.local/bin/palette.py" \
+    "$HOME/.local/bin/rice-theme.py" \
+    "$HOME/.local/bin/rice-theme" \
+    "$HOME/.local/bin/rice-theme-daemon" \
     "$HOME/.local/bin/rice-shot" \
     "$HOME/.local/bin/rice-lock" \
     "$HOME/.local/bin/rice-menu" \
@@ -83,7 +88,7 @@ else
 fi
 
 # Commands
-for cmd in i3 picom dunst i3lock kitty pavucontrol scrot feh pmenu xrdb rsvg-convert firefox; do
+for cmd in i3 picom dunst i3lock kitty nano pavucontrol scrot feh pmenu xrdb rsvg-convert firefox; do
     if command -v "$cmd" >/dev/null 2>&1; then ok "$cmd in PATH"; else bad "$cmd not found"; fi
 done
 # Either file manager is fine; the rice prefers pcmanfm and falls back to thunar.

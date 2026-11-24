@@ -176,6 +176,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+s exec --no-startup-id sh -c '$HOME/.local/bin/rice-shot full'
 bindsym $mod+Shift+o exec --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
 bindsym $mod+Shift+p exec --no-startup-id sh -c '$HOME/.local/bin/rice-reload'
+bindsym $mod+Shift+t exec --no-startup-id sh -c '$HOME/.local/bin/rice-theme'
 
 bindsym $mod+Shift+x exec --no-startup-id sh -c '$HOME/.local/bin/rice-lock'
 bindsym $mod+n exec --no-startup-id sh -c 'command -v dunstctl >/dev/null 2>&1 && dunstctl history-pop'
@@ -198,6 +199,7 @@ bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
 # Each command is idempotent (kills old instances first).
 exec_always --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
 exec_always --no-startup-id xrdb -merge "$HOME/.config/pmenu/Xresources"
+exec_always --no-startup-id $HOME/.local/bin/rice-theme-daemon
 exec_always --no-startup-id setxkbmap -layout "us,ru" -option "grp:alt_shift_toggle"
 # i3 parses ';' inside sh -c as its own command separator, so use && / || only.
 exec_always --no-startup-id sh -c 'pkill -x kando 2>/dev/null || true && pkill -x picom 2>/dev/null || true && picom --config "$HOME/.config/picom/picom.conf" 2>/dev/null'

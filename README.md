@@ -31,6 +31,14 @@ icons, and a **Bibata Modern Ice** cursor.
 The whole rice — i3 borders, picom shadows, dunst notifications, lock screen,
 GTK overrides, icons, and the pmenu X resources — uses only these colors.
 
+### Edit the palette live
+
+Press `Mod+Shift+t` (or pick **Rice → Edit theme** in `Mod+d`) to open
+`~/.config/hkpie/palette.conf` in nano inside kitty. The file contains only the
+eight `name=#HEX` lines above — no exports, no CSS, no comments. A small daemon
+started by i3 watches it and re-renders the GTK 3/4 themes, pmenu X resources,
+lock image, preview, and merged X resources as soon as you save.
+
 ---
 
 ## ✨ What's inside
@@ -261,6 +269,10 @@ hkpie/
 │   └── i3lock-color-hkpie-ring.patch # scaled dark ring line + slab shadow
 ├── scripts/
 │   ├── install-portage.sh          # optional root helper
+│   ├── palette.py                  # reads ~/.config/hkpie/palette.conf
+│   ├── rice-theme                  # opens the palette in nano (kitty)
+│   ├── rice-theme.py               # renders GTK/pmenu/lock from the palette
+│   ├── rice-theme-daemon           # watches for palette saves
 │   ├── make-lock.py                # generates the lock-screen image
 │   ├── make-preview.py             # regenerates the pmenu/GTK preview
 │   ├── rice-wallpaper

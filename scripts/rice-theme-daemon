@@ -1,0 +1,23 @@
+#!/bin/sh
+# Watch ~/.config/hkpie/palette.conf and re-render the theme on edits. ✿
+set -eu
+
+here="$(dirname "$0")"
+conf="${HOME}/.config/hkpie/palette.conf"
+lock="${XDG_RUNTIME_DIR:-/tmp}/hkpie-theme-daemon.lock"
+
+python3 "$here/palette.py" --init >/dev/null 2>&1 || true
+
+# One watcher only; mkdir is an atomic lock on every filesystem here.
+mkdir -p "$lock" 2>/dev/null || exit 0
+trap 'rmdir "$lock" 2>/dev/null || true' 0 1 2 15
+
+last=""
+while :; do
+    current="$(cksum "$conf" 2>/dev/null || true)"
+    if [ -n "$current" ] && [ "$current" != "$last" ]; then
+        last="$current"
+        python3 "$here/rice-theme.py" >/dev/null 2>&1 || true
+    fi
+    sleep 1
+done
