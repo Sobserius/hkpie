@@ -119,10 +119,13 @@ def main() -> None:
     draw = ImageDraw.Draw(image)
 
     cx, cy = width // 2, height // 2
+    # Lift the card so the pmenu-style ring sits below it instead of on top of
+    # the clock; rice-lock keeps its centre at h/2 + 330.
+    card_cy = cy - 70
     card_w = min(760, width - 80)
     card_h = min(460, height - 80)
-    card = (cx - card_w // 2, cy - card_h // 2,
-            cx + card_w // 2, cy + card_h // 2)
+    card = (cx - card_w // 2, card_cy - card_h // 2,
+            cx + card_w // 2, card_cy + card_h // 2)
 
     # Neubrutalist lock card: square, 18px hard shadow, heavy ink outline.
     draw.rectangle(

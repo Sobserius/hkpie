@@ -1,20 +1,63 @@
 #!/usr/bin/env sh
-# Lock the screen with the hkpie-brutalist wallpaper. ✿
+# Lock the screen with the hkpie-brutalist wallpaper and a pie-style ring. ✿
 set -u
 
 LOCK_IMAGE="${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png"
+PIE_LOCKER="${HOME}/.local/bin/hkpie-i3lock"
 
-if command -v i3lock >/dev/null 2>&1; then
-    # Regenerate on every lock so the clock and date are current.
-    if command -v python3 >/dev/null 2>&1; then
-        python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
-    fi
-    # -e avoids a PAM delay from accidental Enter, -f shows failed attempts,
-    # -k shows the current EN/RU layout, -u kills the round unlock indicator.
+# Regenerate on every lock so the clock and date are current.
+if command -v python3 >/dev/null 2>&1; then
+    python3 "$(dirname "$0")/make-lock.py" >/dev/null 2>&1 || true
+fi
+
+pie_lock() {
     if [ -f "$LOCK_IMAGE" ]; then
-        exec i3lock -n -e -f -k -u -i "$LOCK_IMAGE"
+        set -- -i "$LOCK_IMAGE"
+    else
+        set -- -c 474333
     fi
-    exec i3lock -n -e -f -k -u -c 474333
+
+    # A fat butter ring, blush typing arcs, dark slab separators: the lock
+    # screen's round indicator now echoes the pmenu pie slices. It is always
+    # visible, so wrong-password text and the EN/RU code stay readable inside.
+    exec "$PIE_LOCKER" -n -e -f "$@" \
+        --indicator \
+        --radius=104 \
+        --ring-width=14 \
+        --inside-color=F7F7F7FF \
+        --ring-color=F6F098FF \
+        --insidever-color=EAE7AAFF \
+        --ringver-color=F0A090FF \
+        --insidewrong-color=F0A090FF \
+        --ringwrong-color=2E2B21FF \
+        --line-color=2E2B21FF \
+        --keyhl-color=F0A090FF \
+        --bshl-color=C3AF8DFF \
+        --separator-color=2E2B21FF \
+        --verif-color=2E2B21FF \
+        --wrong-color=2E2B21FF \
+        --verif-size=24 \
+        --wrong-size=24 \
+        --verif-text=CHECK \
+        --wrong-text=WRONG \
+        --keylayout=2 \
+        --layout-color=474333FF \
+        --layout-size=28 \
+        --no-modkey-text \
+        --ind-pos='w/2:h/2+330' \
+        --layout-pos='ix:iy+48'
+}
+
+if [ -x "$PIE_LOCKER" ]; then
+    pie_lock
+fi
+
+# Fallback: vanilla Gentoo i3lock keeps its circular unlock feedback.
+if command -v i3lock >/dev/null 2>&1; then
+    if [ -f "$LOCK_IMAGE" ]; then
+        exec i3lock -n -e -f -k -i "$LOCK_IMAGE"
+    fi
+    exec i3lock -n -e -f -k -c 474333
 fi
 
 # Fallback for systems using a display manager / logind instead of i3lock.

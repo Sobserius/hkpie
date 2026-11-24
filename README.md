@@ -10,8 +10,8 @@ Includes dunst, a lock screen, a matching **pmenu** pie menu, letter-block
 icons, and a **Bibata Modern Ice** cursor.
 
 > No hours of compiling: every Gentoo package is installed with `emerge -g`
-> (binary packages first). pmenu is a tiny two-file C build; Bibata comes from a
-> verified upstream release archive.
+> (binary packages first). pmenu and the lock-screen ring are tiny local C builds;
+> Bibata comes from a verified upstream release archive.
 
 ---
 
@@ -44,9 +44,9 @@ GTK overrides, icons, and the pmenu X resources — uses only these colors.
   opacity, in the wallpaper's darkest ink; no dimming, with short appear/disappear
   animations on window open/close.
 * **dunst + lock screen** — square notification blocks; `Mod+Shift+x` locks with
-  a blurred wallpaper card showing the current time/date, a hard ink outline,
-  keyboard-layout and failed-attempt indicators, a clean password prompt, and no
-  circular unlock indicator.
+  a blurred wallpaper card showing the current time/date and a hard ink outline,
+  plus a fat butter ring below it. The ring echoes the pmenu pie slices: blush
+  typing arcs, dark slab separators, an EN/RU code, and clear WRONG/CHECK text.
 * **polkit-gnome** — lightweight GUI authentication prompts; autostarts with i3.
 * **pmenu menu** — `Mod+d` opens a pie menu with butter slices, a blush active slice,
   no ink outline, Retrosmart icons, the hard dark slab ring, and no fullscreen Electron
@@ -85,16 +85,20 @@ The installer:
    `x11-terms/kitty`,
    `media-sound/pavucontrol`, `x11-misc/pcmanfm`, `app-arch/unzip`, `sys-apps/dbus`,
    `x11-apps/xrandr`, `x11-apps/xrdb`, `gnome-base/librsvg`, `dev-python/pygobject`,
-  plus pmenu build deps.
+   plus pmenu and lock-ring build deps.
 2. Generates the lock image with PIL and renders pmenu PNGs from Retrosmart SVGs.
 3. Copies the bundled `assets/hkpiewallpaper.png` (or your existing
    `~/Pictures/hkpiewallpaper.png` if present) to
    `~/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png`.
 4. Installs the configs, scripts, Retrosmart globally (GTK/GSettings/Xfconf/dunst/Nemo),
-   pmenu X resources and verified Bibata cursor, then builds pmenu locally into
-   `~/.local/bin` (two C files, no Node toolchain).
+   pmenu X resources and verified Bibata cursor, then builds pmenu and the styled
+   locker locally into `~/.local/bin` (no Node toolchain, no system i3lock swap).
 5. Backs up any existing config it replaces into
    `~/.config/kawaii-rice-backups/<timestamp>/`.
+
+The styled locker lives at `~/.local/bin/hkpie-i3lock`. If its tiny local build
+fails, `rice-lock` falls back to vanilla `i3lock`, which still shows the circular
+unlock feedback.
 
 If packages are already installed, skip the emerge step:
 
@@ -177,7 +181,7 @@ requested.
 | `Mod + v` | pavucontrol volume mixer |
 | `Mod + n` | Show notification history (dunst) |
 | `Mod + Shift + n` | Close the newest notification |
-| `Mod + Shift + x` | Lock with live time/date card and EN/RU layout hint |
+| `Mod + Shift + x` | Lock with live time/date card and a pmenu-style round indicator |
 | `Mod + 1…0` | Switch workspace |
 | `Mod + Shift + 1…0` | Move focused window to workspace |
 | `Mod + h/j/k/l` or arrows | Focus window |

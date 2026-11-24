@@ -14,6 +14,7 @@ BACKUP_ROOT="${HOME}/.config/kawaii-rice-backups"
 BACKUP_DIR="${BACKUP_ROOT}/$(date +%Y%m%d-%H%M%S)"
 EMERGE_CMD="${EMERGE:-sudo emerge -g --ask}"
 PMENU_COMMIT="${PMENU_COMMIT:-98052480c168e20463cfe4927e10c279b91de1ab}"
+I3LOCK_COLOR_COMMIT="${I3LOCK_COLOR_COMMIT:-e6c0caf9b7aa22cc7864493132a1a2e258da1761}"
 RETROSMART_COMMIT="${RETROSMART_COMMIT:-b74839a072eb21256d0cb19119a623d987711414}"
 PORTAGE_SETUP="${PORTAGE_SETUP:-0}"
 
@@ -78,6 +79,14 @@ PACKAGES=(
     x11-apps/xrdb
     x11-apps/xclock
     x11-apps/setxkbmap
+    dev-build/autoconf
+    dev-build/automake
+    dev-build/libtool
+    virtual/pkgconfig
+    dev-libs/libev
+    x11-libs/xcb-util-image
+    x11-libs/xcb-util-xrm
+    x11-libs/libxkbcommon
     dev-python/pygobject
     gnome-base/librsvg
     media-libs/imlib2
@@ -336,6 +345,49 @@ install_pmenu() {
 }
 
 install_pmenu
+
+# ---------------------------------------------------------------------------
+info "Installing the hkpie pie-style lock indicator"
+# ---------------------------------------------------------------------------
+# Gentoo's i3lock 2.16 cannot style its round indicator. This tiny local C build
+# stays in ~/.local/bin, so the system i3lock package is untouched and remains
+# the fallback. Pinned so the lock look never drifts between installs.
+install_i3lock_color() {
+    local src="${HOME}/.local/src/i3lock-color"
+    local bin="${HOME}/.local/bin/hkpie-i3lock"
+
+    if [[ -x "${bin}" ]] && [[ "$(git -C "${src}" rev-parse HEAD 2>/dev/null || true)" == "${I3LOCK_COLOR_COMMIT}" ]]; then
+        ok "hkpie-i3lock already installed at ${I3LOCK_COLOR_COMMIT}"
+        return 0
+    fi
+
+    for cmd in git make autoreconf pkg-config; do
+        if ! command -v "${cmd}" >/dev/null 2>&1; then
+            warn "${cmd} is required to build hkpie-i3lock; using system i3lock"
+            return 0
+        fi
+    done
+
+    mkdir -p "$(dirname "${src}")"
+    if [[ ! -d "${src}/.git" ]]; then
+        info "cloning i3lock-color"
+        git clone --quiet https://github.com/Raymo111/i3lock-color.git "${src}"
+    fi
+
+    info "building hkpie-i3lock at ${I3LOCK_COLOR_COMMIT}"
+    if ! git -C "${src}" checkout --quiet "${I3LOCK_COLOR_COMMIT}"; then
+        warn "could not check out hkpie-i3lock ${I3LOCK_COLOR_COMMIT}; using system i3lock"
+        return 0
+    fi
+    if ! (cd "${src}" && sh ./build.sh >/dev/null 2>&1); then
+        warn "hkpie-i3lock build failed; using system i3lock"
+        return 0
+    fi
+    install -m 0755 "${src}/build/i3lock" "${bin}"
+    ok "hkpie-i3lock installed to ${bin}"
+}
+
+install_i3lock_color
 pkill -x kando 2>/dev/null || true
 
 # ---------------------------------------------------------------------------
@@ -354,7 +406,7 @@ cat <<EOF
   Log out and select i3, or press Mod+Shift+c to reload.
   • Mod+d opens the pmenu pie menu with Retrosmart icons (no Kando overlay).
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
-  • Mod+Shift+x locks with a live time/date card, EN/RU hint, and hard shadow.
+  • Mod+Shift+x locks with a live time/date card and a pie-style round indicator.
   • Colors: cream #EAE7AA · butter #F6F098 · blush #F0A090 · ink #474333
   • Backups: ${BACKUP_DIR}
 
