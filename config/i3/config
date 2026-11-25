@@ -1,8 +1,8 @@
 # ════════════════════════════════════════════════════════════════════════════
 #  hkpie rice · i3wm  ✿  kawaii neubrutalist
 #  Palette roles (see ~/.config/hkpie/palette.conf)
-#  background #EAE7AA · highlight #F6F098 · surface #F7F7F7 · accent #F0A090
-#  muted #C3AF8D · muted-dark #A79071 · foreground #474333 · shadow #2E2B21
+#  background #FAF6EE · highlight #C9B99F · surface #DFD3BE · accent #D96B5C
+#  muted #B8A88E · muted-dark #7D705D · foreground #2E2924 · shadow #1C1916
 # ════════════════════════════════════════════════════════════════════════════
 
 set $mod Mod4
@@ -16,14 +16,14 @@ set $mixer pavucontrol
 # ~/.local/bin is not on PATH in the X session; use absolute paths.
 set $menu /home/sob/.local/bin/rice-menu
 
-set $background  "#EAE7AA"
-set $highlight "#F6F098"
-set $surface  "#F7F7F7"
-set $accent  "#F0A090"
-set $muted    "#C3AF8D"
-set $muted-dark  "#A79071"
-set $foreground    "#474333"
-set $shadow   "#2E2B21"
+set $background  "#FAF6EE"
+set $highlight "#C9B99F"
+set $surface  "#DFD3BE"
+set $accent  "#D96B5C"
+set $muted    "#B8A88E"
+set $muted-dark  "#7D705D"
+set $foreground    "#2E2924"
+set $shadow   "#1C1916"
 
 # ── General feel ────────────────────────────────────────────────────────────
 font pango:JetBrains Mono 11
@@ -200,6 +200,9 @@ bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
 exec_always --no-startup-id sh -c '$HOME/.local/bin/rice-wallpaper'
 exec_always --no-startup-id xrdb -merge "$HOME/.config/pmenu/Xresources"
 exec_always --no-startup-id $HOME/.local/bin/rice-theme-daemon
+# startx does not put DISPLAY in systemd --user; without this the GTK portal
+# backend cannot open the display and xdg-desktop-portal times out.
+exec_always --no-startup-id $HOME/.local/bin/rice-portal-env
 exec_always --no-startup-id setxkbmap -layout "us,ru" -option "grp:alt_shift_toggle"
 # i3 parses ';' inside sh -c as its own command separator, so use && / || only.
 exec_always --no-startup-id sh -c 'pkill -x kando 2>/dev/null || true && pkill -x picom 2>/dev/null || true && picom --config "$HOME/.config/picom/picom.conf" 2>/dev/null'

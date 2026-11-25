@@ -20,19 +20,19 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
-# Samples from hkpiewallpaper.png (plus two close pastel relatives).
-BUTTER = (246, 240, 152)  # #F6F098
-BLUSH = (240, 160, 144)   # #F0A090
-CREAM = (234, 231, 170)   # #EAE7AA
-PAPER = (247, 247, 247)   # #F7F7F7
-TAN = (195, 175, 141)     # #C3AF8D
-MOCHA = (167, 144, 113)   # #A79071
+# Samples from hkpie-wallpaper.jpeg (plus two close relatives).
+BUTTER = (201, 185, 159)  # #C9B99F
+BLUSH = (217, 107, 92)    # #D96B5C
+CREAM = (250, 246, 238)   # #FAF6EE
+PAPER = (223, 211, 190)   # #DFD3BE
+TAN = (184, 168, 142)     # #B8A88E
+MOCHA = (125, 112, 93)    # #7D705D
 SOFT_PINK = (244, 196, 188)
 SOFT_YELLOW = (250, 232, 160)
 FILLS = [BUTTER, BLUSH, CREAM, PAPER, TAN, SOFT_PINK, SOFT_YELLOW]
 
-INK = (71, 67, 51)        # #474333
-DEEP = (46, 43, 33)       # #2E2B21
+INK = (46, 41, 36)        # #2E2924
+DEEP = (28, 25, 22)       # #1C1916
 
 SIZES = (16, 22, 24, 32, 48, 64, 128)
 
@@ -147,8 +147,8 @@ def save_svg(icon_id: str, label: str, out: pathlib.Path) -> None:
     letter = html.escape(letter_for(label, ICONS[icon_id][1]))
     svg = f'''<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <rect x="25" y="25" width="104" height="104" fill="#2E2B21"/>
-  <rect x="14" y="14" width="104" height="104" fill="#{r:02x}{g:02x}{b:02x}" stroke="#474333" stroke-width="9"/>
+  <rect x="25" y="25" width="104" height="104" fill="#1C1916"/>
+  <rect x="14" y="14" width="104" height="104" fill="#{r:02x}{g:02x}{b:02x}" stroke="#2E2924" stroke-width="9"/>
   <text x="66" y="72" text-anchor="middle" dominant-baseline="central"
         font-family="DejaVu Sans, sans-serif" font-size="72" font-weight="900"
         fill="{fg}">{letter}</text>
@@ -181,7 +181,7 @@ def main() -> None:
 
     dirs = ",".join(f"{s}x{s}/{c}" for s in SIZES for c in contexts)
     index = ["[Icon Theme]", "Name=Hkpie Blocks",
-             "Comment=Square neubrutalist blocks with app initials (hkpiewallpaper palette)",
+             "Comment=Square neubrutalist blocks with app initials (hkpie-wallpaper palette)",
              "Inherits=Adwaita,hicolor", f"Directories={dirs}", ""]
     for size in SIZES:
         for context, freedesktop_context in contexts.items():

@@ -10,7 +10,7 @@ offset = (14, 48)
 notification_limit = 8
 
 frame_width = 4
-frame_color = "#474333"
+frame_color = "#2E2924"
 separator_color = frame
 padding = 10
 horizontal_padding = 10
@@ -35,19 +35,19 @@ dmenu = /usr/bin/dmenu -p dunst:
 browser = /usr/bin/xdg-open
 
 [urgency_low]
-background = "#F6F098"
-foreground = "#474333"
-frame_color = "#474333"
+background = "#C9B99F"
+foreground = "#2E2924"
+frame_color = "#2E2924"
 timeout = 6
 
 [urgency_normal]
-background = "#F7F7F7"
-foreground = "#474333"
-frame_color = "#474333"
+background = "#DFD3BE"
+foreground = "#2E2924"
+frame_color = "#2E2924"
 timeout = 8
 
 [urgency_critical]
-background = "#F0A090"
-foreground = "#2E2B21"
-frame_color = "#2E2B21"
+background = "#D96B5C"
+foreground = "#1C1916"
+frame_color = "#1C1916"
 timeout = 0

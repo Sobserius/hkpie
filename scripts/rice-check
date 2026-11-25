@@ -27,6 +27,7 @@ for f in \
     "$HOME/.config/gtk-3.0/settings.ini" \
     "$HOME/.config/gtk-4.0/settings.ini" \
     "$HOME/.config/pmenu/Xresources" \
+    "$HOME/.config/xdg-desktop-portal/portals.conf" \
     "$HOME/.config/fontconfig/conf.d/99-kawaii-rice.conf" \
     "$HOME/.config/hkpie/palette.conf" \
     "$HOME/.local/bin/palette.py" \
@@ -36,6 +37,7 @@ for f in \
     "$HOME/.local/bin/rice-wallpaper" \
     "$HOME/.local/bin/rice-pick-wallpaper.py" \
     "$HOME/.local/bin/rice-wallpaper-config.py" \
+    "$HOME/.local/bin/rice-portal-env" \
     "$HOME/.local/bin/rice-shot" \
     "$HOME/.local/bin/rice-lock" \
     "$HOME/.local/bin/rice-menu" \
@@ -53,12 +55,12 @@ done
     bad 'HkpieBrutal GTK theme missing'
 
 # Wallpaper + generated assets
-if [ -f "${HOME}/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png" ]; then
+if [ -f "${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-wallpaper.jpeg" ]; then
     ok 'wallpaper installed'
-elif [ -f "${HOME}/Pictures/hkpiewallpaper.png" ]; then
+elif [ -f "${HOME}/Pictures/hkpie-wallpaper.jpeg" ]; then
     ok 'wallpaper found in ~/Pictures (run rice-wallpaper after copying)'
 else
-    bad 'hkpiewallpaper.png not found'
+    bad 'hkpie-wallpaper.jpeg not found'
 fi
 
 if [ -f "${HOME}/.local/share/backgrounds/kawaii-rice/hkpie-lock.png" ]; then

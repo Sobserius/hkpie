@@ -2,7 +2,7 @@
 """Shared hkpie palette reader.
 
 The editable palette lives at ~/.config/hkpie/palette.conf and contains only
-role=value lines, e.g. `accent=#F0A090`. Old color-name keys are migrated on
+role=value lines, e.g. `accent=#D96B5C`. Old color-name keys are migrated on
 read so existing installs keep their custom values.
 """
 from __future__ import annotations
@@ -12,15 +12,15 @@ import pathlib
 import re
 
 DEFAULT = {
-    "background": "#EAE7AA",
-    "surface": "#F7F7F7",
-    "highlight": "#F6F098",
-    "accent": "#F0A090",
-    "foreground": "#474333",
-    "outline": "#474333",
-    "shadow": "#2E2B21",
-    "muted": "#C3AF8D",
-    "muted-dark": "#A79071",
+    "background": "#FAF6EE",
+    "surface": "#DFD3BE",
+    "highlight": "#C9B99F",
+    "accent": "#D96B5C",
+    "foreground": "#2E2924",
+    "outline": "#2E2924",
+    "shadow": "#1C1916",
+    "muted": "#B8A88E",
+    "muted-dark": "#7D705D",
 }
 
 # Existing installs used toy color names; map them to roles without losing values.

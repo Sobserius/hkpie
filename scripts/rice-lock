@@ -17,14 +17,14 @@ palette_hex() {
 
 FILLER_HEX="$(python3 "$here/palette.py" --get background 2>/dev/null || true)"
 FILLER_HEX="${FILLER_HEX#\#}"
-[ -n "$FILLER_HEX" ] || FILLER_HEX=EAE7AA
+[ -n "$FILLER_HEX" ] || FILLER_HEX=FAF6EE
 
-SURFACE="$(palette_hex surface F7F7F7)"
-BACKGROUND="$(palette_hex background EAE7AA)"
-HIGHLIGHT="$(palette_hex highlight F6F098)"
-ACCENT="$(palette_hex accent F0A090)"
-SHADOW="$(palette_hex shadow 2E2B21)"
-MUTED="$(palette_hex muted C3AF8D)"
+SURFACE="$(palette_hex surface DFD3BE)"
+BACKGROUND="$(palette_hex background FAF6EE)"
+HIGHLIGHT="$(palette_hex highlight C9B99F)"
+ACCENT="$(palette_hex accent D96B5C)"
+SHADOW="$(palette_hex shadow 1C1916)"
+MUTED="$(palette_hex muted B8A88E)"
 
 # Regenerate on every lock so the clock and date are current.
 if command -v python3 >/dev/null 2>&1; then

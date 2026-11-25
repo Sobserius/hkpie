@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# startx does not pass DISPLAY/XAUTHORITY into systemd --user, so the GTK portal
+# backend dies with "cannot open display" and xdg-desktop-portal times out.
+# Import them for both the user manager and D-Bus activation. ✿
+set -u
+
+[ -n "${DISPLAY:-}" ] || exit 0
+XAUTHORITY="${XAUTHORITY:-${HOME}/.Xauthority}"
+set -- DISPLAY
+[ -f "$XAUTHORITY" ] && set -- "$@" XAUTHORITY
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --user import-environment "$@" >/dev/null 2>&1 || true
+fi
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --systemd "$@" >/dev/null 2>&1 || true
+fi

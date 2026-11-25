@@ -164,6 +164,10 @@ install_file "${RICE_DIR}/config/kitty/kitty.conf"  "${HOME}/.config/kitty/kitty
 install_file "${RICE_DIR}/config/gtk-3.0/settings.ini" "${HOME}/.config/gtk-3.0/settings.ini"
 install_file "${RICE_DIR}/config/gtk-3.0/gtk.css"      "${HOME}/.config/gtk-3.0/gtk.css"
 install_file "${RICE_DIR}/config/gtk-4.0/settings.ini" "${HOME}/.config/gtk-4.0/settings.ini"
+# Under startx there is no desktop env var; pin the GTK backend explicitly so
+# xdg-desktop-portal does not fall back/timing out while activating it.
+install_file "${RICE_DIR}/config/xdg-desktop-portal/portals.conf" \
+             "${HOME}/.config/xdg-desktop-portal/portals.conf"
 install_file "${RICE_DIR}/config/fontconfig/99-kawaii-rice.conf" \
              "${HOME}/.config/fontconfig/conf.d/99-kawaii-rice.conf"
 install_file "${RICE_DIR}/config/pmenu/Xresources" \
@@ -223,10 +227,13 @@ ok "PCManFM set to open terminals in kitty"
 info "Installing helper scripts"
 # ---------------------------------------------------------------------------
 mkdir -p "${HOME}/.local/bin"
-for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-pick-wallpaper.py rice-wallpaper-config.py rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
+for script in palette.py rice-theme.py rice-theme rice-theme-daemon rice-wallpaper rice-pick-wallpaper.py rice-wallpaper-config.py rice-portal-env rice-reload rice-check rice-shot rice-lock rice-menu rice-menu-spec.py rice-clipboard.py make-lock.py make-preview.py make-pmenu-icons.sh; do
     install_file "${RICE_DIR}/scripts/${script}" "${HOME}/.local/bin/${script}"
     chmod +x "${HOME}/.local/bin/${script}"
 done
+
+# Apply the portal environment immediately in an already-running X session.
+"${HOME}/.local/bin/rice-portal-env" >/dev/null 2>&1 || true
 
 # Keep a wallpaper chosen through Rice → Wallpaper after config reinstalls.
 if [[ -f "${HOME}/.config/hkpie/wallpaper" ]]; then
@@ -441,7 +448,8 @@ cat <<EOF
   • Mod+Return and Mod+Shift+Return both open kitty, the default terminal.
   • Mod+Shift+t opens the editable palette in nano; edits restyle GTK, kitty, i3, dunst, picom, pmenu and the live lock screen.
   • Mod+Shift+x locks with a live time/date card and a pie-style round indicator.
-  • Palette roles: background #EAE7AA · highlight #F6F098 · accent #F0A090
+  • Palette roles: background #FAF6EE · highlight #C9B99F · accent #D96B5C
+  • GTK portal backend is pinned for startx sessions — no xdg-desktop-portal timeout.
   • Backups: ${BACKUP_DIR}
 
   Have fun ♡

@@ -2,6 +2,14 @@
 # hkpie rice · startx session ✿
 set -e
 
+# Fallback for X clients started from a plain TTY shell.
+export DISPLAY="${DISPLAY:-:0}"
+export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
+
+# systemd --user needs these too, or xdg-desktop-portal-gtk cannot open the
+# display and the main portal times out.
+[ -x "$HOME/.local/bin/rice-portal-env" ] && "$HOME/.local/bin/rice-portal-env" || true
+
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources" || true
 
 # Apps that ask for a terminal should get kitty, never xterm.

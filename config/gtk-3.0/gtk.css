@@ -1,13 +1,13 @@
 /* hkpie rice · GTK3 user overrides ✿
    Neubrutalism: square corners, 3px ink outlines, hard offset shadows. */
 
-@define-color background #EAE7AA;
-@define-color highlight #F6F098;
-@define-color surface #F7F7F7;
-@define-color accent #F0A090;
-@define-color muted #C3AF8D;
-@define-color outline #474333;
-@define-color shadow #2E2B21;
+@define-color background #FAF6EE;
+@define-color highlight #C9B99F;
+@define-color surface #DFD3BE;
+@define-color accent #D96B5C;
+@define-color muted #B8A88E;
+@define-color outline #2E2924;
+@define-color shadow #1C1916;
 
 window.background,
 .background {

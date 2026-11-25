@@ -1,7 +1,7 @@
 # 🌸 hkpie rice — Gentoo / i3wm / kawaii neubrutalism ✿
 
 A complete **neubrutalist** desktop rice for **Gentoo + i3wm**, themed with colors
-sampled directly from `~/Pictures/hkpiewallpaper.png`.
+sampled directly from the bundled `assets/hkpie-wallpaper.jpeg`.
 
 Neubrutalism here means: **square geometry, heavy ink outlines, hard offset shadows,
 flat ungradient fills, oversized type, and raw high contrast** — not soft rounded
@@ -15,19 +15,19 @@ icons, and a **Bibata Modern Ice** cursor.
 
 ---
 
-## 🎨 Palette (from hkpiewallpaper.png)
+## 🎨 Palette (from hkpie-wallpaper.jpeg)
 
 | Role           | Hex       | Controls                                      |
 |----------------|-----------|-----------------------------------------------|
-| `background`   | `#EAE7AA` | whole-screen filler, window backgrounds       |
-| `surface`      | `#F7F7F7` | cards, inputs, menus, lock card               |
-| `highlight`    | `#F6F098` | header bars, primary fills, lock ring         |
-| `accent`       | `#F0A090` | selection, active border, hover, typing arcs  |
-| `foreground`   | `#474333` | normal text                                   |
-| `outline`      | `#474333` | heavy borders and lineart                     |
-| `shadow`       | `#2E2B21` | hard offset slabs, pmenu ring, urgency        |
-| `muted`        | `#C3AF8D` | scrollbars, grid dots                         |
-| `muted-dark`   | `#A79071` | deeper shading                                |
+| `background`   | `#FAF6EE` | whole-screen filler, window backgrounds       |
+| `surface`      | `#DFD3BE` | cards, inputs, menus, lock card               |
+| `highlight`    | `#C9B99F` | header bars, primary fills, lock ring         |
+| `accent`       | `#D96B5C` | selection, active border, hover, typing arcs  |
+| `foreground`   | `#2E2924` | normal text                                   |
+| `outline`      | `#2E2924` | heavy borders and lineart                     |
+| `shadow`       | `#1C1916` | hard offset slabs, pmenu ring, urgency        |
+| `muted`        | `#B8A88E` | scrollbars, grid dots                         |
+| `muted-dark`   | `#7D705D` | deeper shading                                |
 
 The whole rice — i3 borders, picom shadows, dunst notifications, lock screen,
 GTK overrides, icons, and the pmenu X resources — uses only these colors.
@@ -101,14 +101,21 @@ The installer:
    `x11-apps/xrandr`, `x11-apps/xrdb`, `gnome-base/librsvg`, `dev-python/pygobject`,
    plus pmenu and lock-ring build deps.
 2. Generates the lock image with PIL and renders pmenu PNGs from Retrosmart SVGs.
-3. Copies the bundled `assets/hkpiewallpaper.png` (or your existing
-   `~/Pictures/hkpiewallpaper.png` if present) to
-   `~/.local/share/backgrounds/kawaii-rice/hkpiewallpaper.png`.
+3. Copies the bundled `assets/hkpie-wallpaper.jpeg` (or your existing
+   `~/Pictures/hkpie-wallpaper.jpeg` if present) to
+   `~/.local/share/backgrounds/kawaii-rice/hkpie-wallpaper.jpeg`.
 4. Installs the configs, scripts, Retrosmart globally (GTK/GSettings/Xfconf/dunst/Nemo),
    pmenu X resources and verified Bibata cursor, then builds pmenu and the styled
    locker locally into `~/.local/bin` (no Node toolchain, no system i3lock swap).
 5. Backs up any existing config it replaces into
    `~/.config/kawaii-rice-backups/<timestamp>/`.
+
+Under `startx`, `systemd --user` does not inherit `DISPLAY`/`XAUTHORITY`, which
+normally makes `xdg-desktop-portal-gtk` die with `cannot open display:` and the
+main portal time out. The installer pins the GTK backend in
+`~/.config/xdg-desktop-portal/portals.conf`, and `rice-portal-env` (called from
+`~/.xinitrc` and i3 autostart) imports the display into the user manager and
+D-Bus activation environment.
 
 The styled locker lives at `~/.local/bin/hkpie-i3lock`. If its tiny local build
 fails, `rice-lock` falls back to vanilla `i3lock`, which still shows the circular
@@ -262,7 +269,7 @@ hkpie/
 ├── palette.env                     # shared color values
 ├── install.sh                      # backs up, installs with emerge -g
 ├── assets/
-│   └── hkpiewallpaper.png          # shipped wallpaper, no generation needed
+│   └── hkpie-wallpaper.jpeg        # shipped wallpaper, no generation needed
 ├── portage/
 │   ├── gentoo.conf                 # official amd64 binhost template
 │   ├── make.conf.snippet           # getbinpkg defaults
@@ -278,6 +285,7 @@ hkpie/
 │   ├── gtk-3.0/{settings.ini,gtk.css}
 │   ├── gtk-4.0/settings.ini
 │   ├── fontconfig/99-kawaii-rice.conf
+│   ├── xdg-desktop-portal/portals.conf  # pins the GTK portal backend
 │   └── xinitrc
 ├── patches/
 │   ├── pmenu-hkpie-lock-ring.patch  # pmenu centre/ring/segments styling
@@ -293,6 +301,7 @@ hkpie/
 │   ├── rice-wallpaper
 │   ├── rice-pick-wallpaper.py      # GTK file chooser for wallpapers
 │   ├── rice-wallpaper-config.py    # writes the choice into palette.env
+│   ├── rice-portal-env              # imports DISPLAY into systemd --user
 │   ├── rice-reload
 │   ├── rice-check
 │   ├── rice-shot

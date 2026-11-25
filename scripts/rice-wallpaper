@@ -12,7 +12,7 @@ if [ -f "$CONFIG" ]; then
 fi
 
 BACKGROUND_DIR="${HOME}/.local/share/backgrounds/kawaii-rice"
-DEFAULT_WALLPAPER="${RICE_WALLPAPER:-${BACKGROUND_DIR}/hkpiewallpaper.png}"
+DEFAULT_WALLPAPER="${RICE_WALLPAPER:-${BACKGROUND_DIR}/hkpie-wallpaper.jpeg}"
 SELECTION="${HOME}/.config/hkpie/wallpaper"
 
 WALLPAPER="$DEFAULT_WALLPAPER"
@@ -31,7 +31,7 @@ apply() {
     fi
     fill="$(python3 "$here/palette.py" --get background 2>/dev/null || true)"
     fill="${fill#\#}"
-    [ -n "$fill" ] || fill=EAE7AA
+    [ -n "$fill" ] || fill=FAF6EE
     if command -v xsetroot >/dev/null 2>&1; then
         xsetroot -solid "#$fill"
     fi
@@ -46,7 +46,7 @@ set_wallpaper() {
     }
 
     mkdir -p "$BACKGROUND_DIR" "$(dirname "$SELECTION")"
-    name="${RICE_WALLPAPER_NAME:-hkpiewallpaper.png}"
+    name="${RICE_WALLPAPER_NAME:-hkpie-wallpaper.jpeg}"
     default_dest="${BACKGROUND_DIR}/${name}"
 
     src_real="$(readlink -f "$src" 2>/dev/null || printf '%s' "$src")"

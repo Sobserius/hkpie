@@ -3,16 +3,16 @@
 ! deep ink line and separators. The hard offset slab comes from picom.
 ! Load with: xrdb -merge ~/.config/pmenu/Xresources
 
-PMenu.centerColor:      #F7F7F7
-PMenu.background:       #F6F098
-PMenu.foreground:       #2E2B21
-PMenu.activeBackground: #F0A090
-PMenu.activeForeground: #2E2B21
+PMenu.centerColor:      #DFD3BE
+PMenu.background:       #C9B99F
+PMenu.foreground:       #1C1916
+PMenu.activeBackground: #D96B5C
+PMenu.activeForeground: #1C1916
 ! pmenu paints its 2px outer rim from these; shadowThickness 0 kills the bevel.
 PMenu.borderWidth:      2
-PMenu.borderColor:      #2E2B21
-PMenu.topShadowColor:   #2E2B21
-PMenu.bottomShadowColor: #2E2B21
+PMenu.borderColor:      #1C1916
+PMenu.topShadowColor:   #1C1916
+PMenu.bottomShadowColor: #1C1916
 PMenu.diameterWidth:    260
 PMenu.shadowThickness:  0
 PMenu.faceName:         xft:Fira Sans:style=Bold
